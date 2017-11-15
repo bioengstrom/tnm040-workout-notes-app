@@ -1,15 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-<<<<<<< HEAD
-  "packagerPid": 31864,
-  "expoServerNgrokUrl": "https://h6-5qy.gusan112.komaapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.h6-5qy.gusan112.komaapp.exp.direct",
-  "ngrokPid": 31880
-=======
-  "packagerPid": 795,
-  "expoServerNgrokUrl": "https://3s-djd.joelpaulsson.komaapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.3s-djd.joelpaulsson.komaapp.exp.direct",
-  "ngrokPid": 807
->>>>>>> a517c6eff468c033686658beb4b2fcc63c177c34
+  "packagerPort": 19002,
+  "packagerPid": 902,
+  "expoServerNgrokUrl": "https://em-uwt.johanfroberg.komaapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.em-uwt.johanfroberg.komaapp.exp.direct",
+  "ngrokPid": 913
 }
