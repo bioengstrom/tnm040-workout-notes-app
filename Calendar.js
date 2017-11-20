@@ -25,7 +25,7 @@ customDatesStyles.push({
 }); */
 
 
-export default class Example extends Component {
+export default class Calendar extends Component {
   render() {
     return (
       <View>

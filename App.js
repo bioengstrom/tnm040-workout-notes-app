@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView} from 'react-native';
 import Note from './notes.js';
 import renderIf from './renderIf.js';
+import Calendar from './Calendar.js';
 
 console.log("Initiation successful!")
 
@@ -29,7 +30,8 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-      	<KeyboardAvoidingView style={styles.noteStyle}>
+      <Calendar/>
+      	<View style={styles.noteStyle}>
       			<Note text={this.state.noteText} id={this.state.id}/>
       			<View>
 			   		<View style={styles.buttonSaveStyle}>
@@ -39,7 +41,7 @@ export default class App extends React.Component {
 		     			<Button onPress={this.clearNote} color="#ffffff" title='Rensa'/>
 	      			</View>
 	      		</View>
-      	</KeyboardAvoidingView>
+      	</View>
       </View>
 	);
 	}

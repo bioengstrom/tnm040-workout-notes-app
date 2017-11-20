@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 6536,
-  "expoServerNgrokUrl": "https://j8-8wg.simonkallberg.komaapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.j8-8wg.simonkallberg.komaapp.exp.direct",
-  "ngrokPid": 11960
+  "packagerPid": 3756,
+  "expoServerNgrokUrl": "https://j8-8wg.hunkpapi.komaapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.j8-8wg.hunkpapi.komaapp.exp.direct",
+  "ngrokPid": 2136
 }
