@@ -38,7 +38,7 @@ export default class Calendar extends Component {
             borderWidth: 1,
             borderHighlightColor: 'white',
           }}
-          style={{ height: 110, paddingTop: 20, paddingBottom: 10 }}
+          style={{ alignSelf: 'stretch', height: 150, paddingTop: 20, paddingBottom: 10 }}
           calendarHeaderStyle={{ color: 'white' }}
           calendarColor={'#4682B4'}
           dateNumberStyle={{ color: 'white' }}
@@ -53,7 +53,6 @@ export default class Calendar extends Component {
           todayDateNumberStyle={{color: 'green'}}
         //  customDatesStyles={customDatesStyles}
         />
-        <Text>Hej idag är jag glad</Text>
       </View>
     );
   }

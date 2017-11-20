@@ -31,9 +31,9 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
       <Calendar/>
-      	<View style={styles.noteStyle}>
+      	<KeyboardAvoidingView style={styles.noteStyle}>
       			<Note text={this.state.noteText} id={this.state.id}/>
-      			<View>
+      			<View style={styles.buttonStyle}>
 			   		<View style={styles.buttonSaveStyle}>
 			   			<Button onPress={Keyboard.dismiss} color="#ffffff" title='Spara'/>
 		      		</View>
@@ -41,7 +41,7 @@ export default class App extends React.Component {
 		     			<Button onPress={this.clearNote} color="#ffffff" title='Rensa'/>
 	      			</View>
 	      		</View>
-      	</View>
+      	</KeyboardAvoidingView>
       </View>
 	);
 	}
@@ -50,39 +50,32 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'red',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
     alignSelf: 'stretch',
+    flexDirection: 'column',
   },
 
   noteStyle: {
   	backgroundColor: 'rgb(60, 180, 115)',
-  	height: 200,
-  	width: 200,
+  	height: '75%',
   	flexDirection: 'column',
   	alignItems: 'center',
   	justifyContent: 'space-between',
+  	alignSelf: 'stretch',
   },
 
   buttonClearStyle: {
  	backgroundColor: 'rgb(240, 70, 70)',
- 	height: 'auto',
-  	width: 200,	
-  	alignSelf: 'flex-end',
   },
 
   buttonSaveStyle: {
  	backgroundColor: '#3399ff',
- 	height: 'auto',
-  	width: 200,	
-  	alignSelf: 'flex-end',
   },
 
-  saveStyle: {
- 	backgroundColor: '#ffff99',
+  buttonStyle: {
  	height: 'auto',
-  	width: 200,	
-  	alignSelf: 'center',
-  },
+  	alignSelf: 'stretch',
+  }
 });

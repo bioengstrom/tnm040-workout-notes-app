@@ -29,7 +29,7 @@ export default class Note extends React.Component {
 	render() {
 		return(
 			<View>
-				<TextInput
+				<TextInput style={{alignSelf: 'stretch',}}
 					editable = {true}
 					placeholder = "Skriv ner ditt pass här."  //Placeholder
 					maxLength = {300} //Maximum number of characters
