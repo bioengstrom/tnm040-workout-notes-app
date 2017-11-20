@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import moment from 'moment'; // 2.18.1
 import CalendarStrip from 'react-native-calendar-strip'; // 1.2.1
 
@@ -9,6 +9,21 @@ let datesWhitelist = [
     end: moment().add(1000, 'days'),// total 4 days enabled
   },
 ];
+/*
+let customDatesStyles = [];
+let startDate = moment();
+customDatesStyles.push({
+  dateNameStyle: { color: 'yellow' },
+  dateNumberStyle: { color: 'yellow' },
+  daySelectionAnimation: {
+    type: 'border',
+    duration: 200,
+    borderWidth: 1,
+    borderHighlightColor: 'white',
+  },
+
+}); */
+
 
 export default class Example extends Component {
   render() {
@@ -19,12 +34,13 @@ export default class Example extends Component {
           daySelectionAnimation={{
             type: 'border',
             duration: 200,
+          //  highlightColor: 'grey',
             borderWidth: 1,
             borderHighlightColor: 'white',
           }}
-          style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
+          style={{ height: 110, paddingTop: 20, paddingBottom: 10 }}
           calendarHeaderStyle={{ color: 'white' }}
-          calendarColor={'##4682B4'}
+          calendarColor={'#4682B4'}
           dateNumberStyle={{ color: 'white' }}
           dateNameStyle={{ color: 'white' }}
           highlightDateNumberStyle={{ color: 'yellow' }}
@@ -33,7 +49,11 @@ export default class Example extends Component {
           disabledDateNumberStyle={{ color: 'grey' }}
           datesWhitelist={datesWhitelist}
           iconContainer={{ flex: 0.1 }}
+          todayDateNameStyle={{ color: 'green'}}
+          todayDateNumberStyle={{color: 'green'}}
+        //  customDatesStyles={customDatesStyles}
         />
+        <Text>Hej idag är jag glad</Text>
       </View>
     );
   }
