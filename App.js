@@ -3,13 +3,14 @@ import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingVie
 import Note from './notes.js';
 import renderIf from './renderIf.js';
 import Calendar from './Calendar.js';
+import CalendarNew from './CalendarNew.js';
 
 console.log("Initiation successful!")
 
 export default class App extends React.Component {
 
 	constructor(props) {
-		super();	
+		super();
 		this.state = {noteText: '', visibility: false, id: new Date()};
 		this.clearNote = this.clearNote.bind(this);
 		this.handleClick = this.handleClick.bind(this);
@@ -31,6 +32,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
       <Calendar/>
+			<CalendarNew/>
       	<KeyboardAvoidingView style={styles.noteStyle}>
       			<Note text={this.state.noteText} id={this.state.id}/>
       			<View style={styles.buttonStyle}>

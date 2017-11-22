@@ -43,8 +43,8 @@ export default class Calendar extends Component {
           calendarColor={'#4682B4'}
           dateNumberStyle={{ color: 'white' }}
           dateNameStyle={{ color: 'white' }}
-          highlightDateNumberStyle={{ color: 'yellow' }}
-          highlightDateNameStyle={{ color: 'yellow' }}
+          highlightDateNumberStyle={{ color: 'black' }}
+          highlightDateNameStyle={{ color: 'black' }}
           disabledDateNameStyle={{ color: 'grey' }}
           disabledDateNumberStyle={{ color: 'grey' }}
           datesWhitelist={datesWhitelist}
