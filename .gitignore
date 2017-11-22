@@ -1,7 +1,11 @@
 # Mac.
 .DS_STORE
 
+# Expo. 
+.expo
+.expo/
+expo
+
 # Node.
 node_modules
 npm-debug.log
-.expo
