@@ -1,8 +1,8 @@
 {
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 9600,
+  "expoServerNgrokUrl": "https://nf-e9j.rustyfooley.komaapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.nf-e9j.rustyfooley.komaapp.exp.direct",
+  "ngrokPid": 18364
 }
