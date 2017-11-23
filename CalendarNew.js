@@ -11,13 +11,13 @@ let validDates = [
 ];
 
 const weekDayButtons = [
-  {text: 'MON', dayFormat: 'Monday'},
-  {text: 'TUE', dayFormat: 'Tuesday'},
-  {text: 'WED', dayFormat: 'Wednesday'},
-  {text: 'THU', dayFormat: 'Thursday'},
-  {text: 'FRI', dayFormat: 'Friday'},
-  {text: 'SAT', dayFormat: 'Saturday'},
-  {text: 'SUN', dayFormat: 'Sunday'},
+  {text: 'MON'},
+  {text: 'TUE'},
+  {text: 'WED'},
+  {text: 'THU'},
+  {text: 'FRI'},
+  {text: 'SAT'},
+  {text: 'SUN'},
 ];
 
 export default class CalendarNew extends Component{
