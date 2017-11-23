@@ -23,12 +23,9 @@ const weekDayButtons = [
 export default class CalendarNew extends Component{
   constructor(props){
     super(props);
-    this.state = {pressStatus: false};
-  }
-
-  buttonTest = () => {
-    Alert.alert("Pressed");
-    console.log("button pressed");
+    this.state={
+      currentButton: moment().format('dddd').substring(0,3).toLowerCase()
+    };
   }
 
   render() {
@@ -46,11 +43,12 @@ export default class CalendarNew extends Component{
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
+    //flex: 1
     backgroundColor: '#4682B4',
     alignItems: 'stretch',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignSelf: 'stretch',
     flexDirection: 'row',
   },
+
 });

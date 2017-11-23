@@ -1,35 +1,38 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableHighlight, Button, Alert} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, Button, Alert} from 'react-native';
 import moment from 'moment';
 
-const roundShapeScale=50;
-
+// https://stackoverflow.com/questions/34815382/react-unselect-from-list-while-selecting-another-item
 export default class DayButton extends Component{
   constructor(props){
     super(props);
-    this.state={pressStatus: false};
-  }
-  _onHideUnderlay(){
-    this.setState({pressStatus: false});
-  }
-  _onShowUnderlay(){
-    this.setState({pressStatus: true});
-  }
-  buttonTest = () => {
-    let printMessage =this.props.text.toString().toLowerCase();
-    Alert.alert(printMessage);
-    console.log(moment().format('DD'));
+    this.state={
+      pressStatus: this.setInitialState()
+    };
   }
 
-  //Sets a different style (color) for today's button.
-  setToday(status, todaysDate){
-    let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
-    let currentDay = moment().format('dddd').substring(0,3).toLowerCase(); //Creates a comparison string with the day of today.
-    if(todaysDate==moment().format('L')){
-      if(status=='pressed') return{color: 'rgba(255, 154, 111, 0.5)',}
-      if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',}
-    }
+  setInitialState(){
+    if(this.props.text.toString().toLowerCase()==moment().format('dddd').substring(0,3).toLowerCase()) return true;
+    else return false;
   }
+
+  _onPress(){
+    //this.setState({pressStatus: true);
+    this.setState({pressStatus: !this.state.pressStatus}); //to be removed
+  }
+
+  _offPress(){
+    this.setState({pressStatus: false});
+  }
+
+  //To be deleted, logging button presses.
+  buttonTest = () => {
+    let printMessage=this.props.text.toString().toLowerCase();
+    Alert.alert(printMessage);
+    console.log(moment().format('DD'));
+    Alert.alert(this.props.bro);
+  }
+
   //Sets the current weeks dates inside the day buttons.
   setDates(returnFormat){
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
@@ -42,60 +45,79 @@ export default class DayButton extends Component{
     }
     return ('-'); //if the loop isn't working, return "-".
   }
+
+  //Sets a different style (color) for today's button.
+  highlightToday(status){
+    let todaysDate=this.setDates('uniqueFormat')
+    if(todaysDate==moment().format('L')){
+      if(status=='pressed') return{color: 'rgba(0, 0, 0, 1.0)',}
+      if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',}
+    }
+  }
+  parentFunction = () => {
+    //this.pressedButton();
+    //this.buttonTest();
+    this._onPress.bind(this);
+  }
+  pressedButton(){
+    return(style={color: 'rgba(0, 0, 0, 1.0)'})
+  }
   render() {
     return(
       <View>
-        <TouchableHighlight
-          activeOpacity={1}
-          underlayColor="transparent"
-          onPress={this.buttonTest}
-          style={this.state.pressStatus?styles.weekDayButtonOnPress:styles.weekDayButton}
-          onHideUnderlay={this._onHideUnderlay.bind(this)}
-          onShowUnderlay={this._onShowUnderlay.bind(this)}
+        <TouchableOpacity
+
+          onPress={this._onPress.bind(this)}
+          onPressOut={() => this.setState({pressStatus: false})}
         >
-          <Text style={this.state.pressStatus?[styles.weekDayButtonTextOnPress,this.setToday('pressed',this.setDates('uniqueFormat'))]:[styles.weekDayButtonText,this.setToday('notPressed',this.setDates('uniqueFormat'))]}>
-            <Text>{this.props.text}{"\n"}</Text>
-            <Text style={styles.dateAlign}>{this.setDates('dayNumberFormat')}</Text>
-          </Text>
-        </TouchableHighlight>
+          <View style={[this.state.pressStatus?styles.weekDayButtonOnPress:styles.weekDayButton]}>
+            <Text style={this.state.pressStatus?[styles.weekDayButtonTextOnPress,this.highlightToday('pressed')]:[styles.weekDayButtonText,this.highlightToday('notPressed')]}>
+              <Text>{this.props.text}{"\n"}</Text>
+              <Text style={styles.dateAlign}>{this.setDates('dayNumberFormat')}</Text>
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
+const roundShapeScale=50;
 const styles = StyleSheet.create({
   weekDayButton: {
+    marginLeft: -5,
     width: roundShapeScale,
     height: roundShapeScale,
     borderRadius: roundShapeScale/2,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 1.0)',
+    borderWidth: 0.75,
+    borderColor: 'transparent',
     backgroundColor: 'transparent',
   },
   weekDayButtonOnPress: {
+    marginLeft: -5,
     width: roundShapeScale,
     height: roundShapeScale,
     borderRadius: roundShapeScale/2,
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
+    borderWidth: 0.75,
+    borderColor: 'rgba(255, 255, 255, 1.0)',
     backgroundColor: 'transparent',
   },
   weekDayButtonText: {
     marginTop: 8,
     textAlign: 'center',
     color: 'rgba(255, 255, 255, 1.0)',
-    fontSize: 12,
+    fontSize: 10,
 
   },
   weekDayButtonTextOnPress: {
     marginTop: 8,
     textAlign: 'center',
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 12,
+    color: 'rgba(0, 0, 0, 1.0)',
+    fontSize: 10,
   },
   dateAlign:{
     alignSelf: 'center',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold'
   },
 });
