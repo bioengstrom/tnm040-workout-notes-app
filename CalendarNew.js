@@ -47,7 +47,7 @@ export default class CalendarNew extends Component{
 const styles = StyleSheet.create({
   container: {
     //flex: 1,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#4682B4',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     alignSelf: 'stretch',
