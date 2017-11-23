@@ -16,8 +16,18 @@ export default class DayButton extends Component{
     this.setState({pressStatus: true});
   }
   buttonTest = () => {
-    Alert.alert("Pressed");
-    console.log("button pressed");
+    let printMessage =this.props.text.toString().toLowerCase();
+    Alert.alert(printMessage);
+    console.log(moment().format('DD'));
+  }
+
+  setDates(){
+    for(let i=0; i < 7; ++i){
+      if(this.props.text.toString().toLowerCase()==moment().startOf('isoweek').add(i,'day').format('dddd').substring(0,3).toLowerCase()) {
+        return (moment().startOf('isoweek').add(i,'day').format('D'));
+      }
+    }
+    return ('-');
   }
   render() {
     return(
@@ -30,7 +40,10 @@ export default class DayButton extends Component{
           onHideUnderlay={this._onHideUnderlay.bind(this)}
           onShowUnderlay={this._onShowUnderlay.bind(this)}
         >
-          <Text style={this.state.pressStatus?styles.weekDayButtonTextOnPress:styles.weekDayButtonText}>{this.props.text}</Text>
+          <View>
+            <Text style={this.state.pressStatus?styles.weekDayButtonTextOnPress:styles.weekDayButtonText}>{this.props.text}</Text>
+            <Text style={[this.state.pressStatus?styles.weekDayButtonTextOnPress:styles.weekDayButtonText, styles.dateAlign]}>{this.setDates()}</Text>
+          </View>
         </TouchableHighlight>
       </View>
     );
@@ -66,4 +79,8 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 12,
   },
+  dateAlign:{
+    alignSelf: 'center',
+  }
+
 });
