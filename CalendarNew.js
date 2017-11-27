@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert , Button} from 'react-native';
 import moment from 'moment';
 import DayButton from './DayButton.js';
 
@@ -24,18 +24,39 @@ export default class CalendarNew extends Component{
   constructor(props){
     super(props);
     this.state={
-      currentButton: moment().format('dddd').substring(0,3).toLowerCase()
+      currentButton: moment().format('dddd').substring(0,3).toLowerCase(),
+      weekDifference: 0,
+      hello: false,
     };
   }
 
+  updateWeekDifference = () => {
+
+    ++this.weekDifference;
+    () => this.setState({weekDifference: this.weekDifference});
+
+  }
+
+  _incrementCount = () => {
+     this.setState(prevState => ({ weekDifference: prevState.weekDifference + 1 }));
+     // prevState => this.setState({weekDifference: prevState+1})
+   }
+
   render() {
     const renderedButtons = weekDayButtons.map(b => {
-      return(<DayButton key={b.text} text={b.text} pressed={b.pressed}/>);
+      return(<DayButton key={b.text} text={b.text} pressed={b.pressed} bajs={this.state.weekDifference}/>);
     });
 
     return (
+      <View>
+      <Button title={'pressipress'} onPress={() => this._incrementCount()}/>
       <View style={styles.container}>
-          {renderedButtons}
+
+
+
+      {renderedButtons}
+      </View>
+
       </View>
     );
   }
@@ -50,5 +71,4 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'row',
   },
-
 });
