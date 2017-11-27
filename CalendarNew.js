@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image, TouchableOpacity, } from 'react-native';
 import moment from 'moment';
 import DayButton from './DayButton.js';
 
@@ -9,6 +9,11 @@ let validDates = [
     end: moment().add(1000, 'days')
   }
 ];
+
+nextWeek {
+  return 7;
+}
+
 
 const weekDayButtons = [
   {text: 'MON', pressed: false},
@@ -24,7 +29,7 @@ export default class CalendarNew extends Component{
   constructor(props){
     super(props);
     this.state={
-      currentButton: moment().format('dddd').substring(0,3).toLowerCase()
+      currentButton: moment().format('dddd').substring(0,3).toLowerCase(),
     };
   }
 
@@ -35,7 +40,13 @@ export default class CalendarNew extends Component{
 
     return (
       <View style={styles.container}>
+          <TouchableOpacity style={[styles.iconContainer]}>
+          <Image source={require("./left-arrow-black.png")} style={styles.icon}/>
+          </TouchableOpacity>
           {renderedButtons}
+          <TouchableOpacity style={[styles.iconContainer]}>
+          <Image source={require("./right-arrow-black.png")} style={styles.icon}/>
+          </TouchableOpacity>
       </View>
     );
   }
@@ -50,5 +61,16 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'row',
   },
+
+	iconContainer: {
+		justifyContent: "center",
+		alignItems: "center",
+		alignSelf: "center",
+	},
+	icon: {
+		resizeMode: "contain",
+    height: 20,
+    width: 20,
+	}
 
 });

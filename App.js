@@ -37,10 +37,10 @@ export default class App extends React.Component {
       			<Note text={this.state.noteText} id={this.state.id}/>
       			<View style={styles.buttonStyle}>
 			   		<View style={styles.buttonSaveStyle}>
-			   			<Button onPress={Keyboard.dismiss} color="#ffffff" title='Spara'/>
+			   			<Button onPress={Keyboard.dismiss} color="white" title='Spara'/>
 		      		</View>
 		      		<View style={styles.buttonClearStyle}>
-		     			<Button onPress={this.clearNote} color="#ffffff" title='Rensa'/>
+		     			<Button onPress={this.clearNote} color="grey" title='Rensa'/>
 	      			</View>
 	      		</View>
       	</KeyboardAvoidingView>
@@ -61,23 +61,22 @@ const styles = StyleSheet.create({
 
   noteStyle: {
   	backgroundColor: 'rgb(60, 180, 115)',
-  	height: '75%',
+  	height: '45%',
   	flexDirection: 'column',
   	alignItems: 'center',
-  	justifyContent: 'space-between',
   	alignSelf: 'stretch',
   },
 
   buttonClearStyle: {
- 	backgroundColor: 'rgb(240, 70, 70)',
+ 		backgroundColor: 'rgb(240, 70, 70)',
   },
 
   buttonSaveStyle: {
- 	backgroundColor: '#3399ff',
+ 		backgroundColor: '#3399ff',
   },
 
   buttonStyle: {
- 	height: 'auto',
+		minHeight: "30%",
   	alignSelf: 'stretch',
   }
 });
