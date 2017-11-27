@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert, Image, TouchableOpacity, } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image, Button, TouchableOpacity, } from 'react-native';
 import moment from 'moment';
 import DayButton from './DayButton.js';
 
@@ -9,11 +9,6 @@ let validDates = [
     end: moment().add(1000, 'days')
   }
 ];
-
-nextWeek {
-  return 7;
-}
-
 
 const weekDayButtons = [
   {text: 'MON', pressed: false},
@@ -30,23 +25,41 @@ export default class CalendarNew extends Component{
     super(props);
     this.state={
       currentButton: moment().format('dddd').substring(0,3).toLowerCase(),
+      weekDifference: 0,
     };
   }
 
+  updateWeekDifference = () => {
+    ++this.weekDifference;
+    () => this.setState({weekDifference: this.weekDifference});
+
+  }
+
+  _incrementCount = () => {
+     this.setState(prevState => ({ weekDifference: prevState.weekDifference + 1 }));
+     // prevState => this.setState({weekDifference: prevState+1})
+   }
+
+   _decrementCount = () => {
+     this.setState(prevState => ({weekDifference: prevState.weekDifference - 1}));
+   }
+
   render() {
     const renderedButtons = weekDayButtons.map(b => {
-      return(<DayButton key={b.text} text={b.text} pressed={b.pressed}/>);
+      return(<DayButton key={b.text} text={b.text} pressed={b.pressed} bajs={this.state.weekDifference}/>);
     });
 
     return (
-      <View style={styles.container}>
-          <TouchableOpacity style={[styles.iconContainer]}>
-          <Image source={require("./left-arrow-black.png")} style={styles.icon}/>
-          </TouchableOpacity>
-          {renderedButtons}
-          <TouchableOpacity style={[styles.iconContainer]}>
-          <Image source={require("./right-arrow-black.png")} style={styles.icon}/>
-          </TouchableOpacity>
+      <View>
+        <View style={styles.container}>
+            <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._decrementCount()}>
+            <Image source={require("./left-arrow-black.png")} style={styles.icon} />
+            </TouchableOpacity>
+            {renderedButtons}
+            <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._incrementCount()}>
+            <Image source={require("./right-arrow-black.png")} style={styles.icon}/>
+            </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -61,7 +74,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'row',
   },
-
 	iconContainer: {
 		justifyContent: "center",
 		alignItems: "center",
@@ -71,6 +83,5 @@ const styles = StyleSheet.create({
 		resizeMode: "contain",
     height: 20,
     width: 20,
-	}
-
+	},
 });
