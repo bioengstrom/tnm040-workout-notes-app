@@ -46,7 +46,7 @@ export default class CalendarNew extends Component{
 
   render() {
     const renderedButtons = weekDayButtons.map(b => {
-      return(<DayButton key={b.text} text={b.text} pressed={b.pressed} bajs={this.state.weekDifference}/>);
+      return(<DayButton key={b.text} text={b.text} pressed={b.pressed} currentWeek={this.state.weekDifference}/>);
     });
 
     return (
