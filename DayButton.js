@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, Button, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import moment from 'moment';
 
 // https://stackoverflow.com/questions/34815382/react-unselect-from-list-while-selecting-another-item
@@ -19,10 +19,6 @@ export default class DayButton extends Component{
   _onPress(){
     //this.setState({pressStatus: true);
     this.setState({pressStatus: !this.state.pressStatus}); //to be removed
-  }
-
-  _offPress(){
-    this.setState({pressStatus: false});
   }
 
   //To be deleted, logging button presses.
@@ -54,24 +50,16 @@ export default class DayButton extends Component{
       if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',}
     }
   }
-  parentFunction = () => {
-    //this.pressedButton();
-    //this.buttonTest();
-    this._onPress.bind(this);
-  }
-  pressedButton(){
-    return(style={color: 'rgba(0, 0, 0, 1.0)'})
-  }
+
   render() {
     return(
       <View>
         <TouchableOpacity
-
           onPress={this._onPress.bind(this)}
           onPressOut={() => this.setState({pressStatus: false})}
         >
           <View style={[this.state.pressStatus?styles.weekDayButtonOnPress:styles.weekDayButton]}>
-            <Text style={this.state.pressStatus?[styles.weekDayButtonTextOnPress,this.highlightToday('pressed')]:[styles.weekDayButtonText,this.highlightToday('notPressed')]}>
+            <Text style={this.state.pressStatus?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[styles.buttonText,this.highlightToday('notPressed')]}>
               <Text>{this.props.text}{"\n"}</Text>
               <Text style={styles.dateAlign}>{this.setDates('dayNumberFormat')}</Text>
             </Text>
@@ -102,14 +90,13 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 1.0)',
     backgroundColor: 'transparent',
   },
-  weekDayButtonText: {
+  buttonText: {
     marginTop: 8,
     textAlign: 'center',
     color: 'rgba(255, 255, 255, 1.0)',
     fontSize: 10,
-
   },
-  weekDayButtonTextOnPress: {
+  buttonTextOnPress: {
     marginTop: 8,
     textAlign: 'center',
     color: 'rgba(0, 0, 0, 1.0)',

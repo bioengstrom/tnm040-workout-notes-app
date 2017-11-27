@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import moment from 'moment';
 import DayButton from './DayButton.js';
 
@@ -11,13 +11,13 @@ let validDates = [
 ];
 
 const weekDayButtons = [
-  {text: 'MON'},
-  {text: 'TUE'},
-  {text: 'WED'},
-  {text: 'THU'},
-  {text: 'FRI'},
-  {text: 'SAT'},
-  {text: 'SUN'},
+  {text: 'MON', pressed: false},
+  {text: 'TUE', pressed: false},
+  {text: 'WED', pressed: false},
+  {text: 'THU', pressed: false},
+  {text: 'FRI', pressed: false},
+  {text: 'SAT', pressed: false},
+  {text: 'SUN', pressed: false},
 ];
 
 export default class CalendarNew extends Component{
@@ -30,7 +30,7 @@ export default class CalendarNew extends Component{
 
   render() {
     const renderedButtons = weekDayButtons.map(b => {
-      return(<DayButton key={b.text} text={b.text}/>);
+      return(<DayButton key={b.text} text={b.text} pressed={b.pressed}/>);
     });
 
     return (
