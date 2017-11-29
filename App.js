@@ -1,48 +1,90 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView} from 'react-native';
-import Note from './notes.js';
+import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage} from 'react-native';
+//import Note from './notes.js';
 import renderIf from './renderIf.js';
 import Calendar from './Calendar.js';
 import CalendarNew from './CalendarNew.js';
 
 console.log("Initiation successful!")
 
+//var myKey = "1";
+
 export default class App extends React.Component {
 
 	constructor(props) {
 		super();
-		this.state = {noteText: '', visibility: false, id: new Date()};
+		this.state = {text: null , key: '0'}; // Default key is set to null, change to current date. AA,JP
 		this.clearNote = this.clearNote.bind(this);
-		this.handleClick = this.handleClick.bind(this);
+		this.handleClick1 = this.handleClick1.bind(this);
+		this.handleClick2 = this.handleClick2.bind(this);
 	}
 
+//Clear current note. AA, JP
 	clearNote() {
-		this.setState({noteText: ''});
-		console.log('Text cleared')
-		console.log(this.state.id.toString()) //Debugging
+		AsyncStorage.setItem(this.state.key, ''); //Save the text
+			this.setState({text: ''});
+		console.log('Text cleared'); //Debugging
 	}
 
-	handleClick() {
-		this.setState({visibility: !this.state.visibility});
-		console.log('Toggle status ' + this.state.visibility)
-		console.log('noteText = ' + this.state.noteText)
+//OK, but replace '1' with clicked date as variable. AA,JP
+	handleClick1() {
+		this.setState({key: '1'});
+		AsyncStorage.getItem('1').then(
+			(value) => {
+				console.log("id", this.state.key, "value", value);
+				this.setState({text: value})
+			}
+		);
+	}
+
+//OK!
+	handleClick2() {
+		this.setState({key: '2'});
+		AsyncStorage.getItem('2').then(
+			(value) => {
+				console.log("id", '2', "value", value);
+				this.setState({text: value})
+			}
+		);
+	}
+
+//Function to save text. AA,JP
+	setTextToSave = (value) => {AsyncStorage.setItem(this.state.key, value); //Saves the text
+		this.setState({text: value});
 	}
 
   render() {
+		console.log(this.state.key, ' saved with: ', this.state.text);
+
     return (
       <View style={styles.container}>
       <Calendar/>
-			<CalendarNew/>
-      	<KeyboardAvoidingView style={styles.noteStyle}>
-      			<Note text={this.state.noteText} id={this.state.id}/>
+				<View style={styles.nav}>
+					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
+					<Button onPress={this.handleClick2} color="#ffffff" title='id2'/>
+				</View>
+      	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
+			{/*<Note text={this.state.text} id={this.state.key}>*/}
+						<View>
+							<TextInput style={styles.textInputStyle}
+								editable = {true}
+								placeholder = "Skriv ner ditt pass här."  //Placeholder
+								maxLength = {300} //Maximum number of characters
+								multiline = {true} //Multiple lines
+								numberOfLines = {100} //Only for Android, need to find solution for IOS
+								onChangeText = {this.setTextToSave} //{(text) => this.setState({text})}
+								value={this.state.text}
+								returnKeyType = {'none'}
+							/>
+						</View>
       			<View style={styles.buttonStyle}>
 			   		<View style={styles.buttonSaveStyle}>
 			   			<Button onPress={Keyboard.dismiss} color="#ffffff" title='Spara'/>
-		      		</View>
-		      		<View style={styles.buttonClearStyle}>
+		      	</View>
+		      	<View style={styles.buttonClearStyle}>
 		     			<Button onPress={this.clearNote} color="#ffffff" title='Rensa'/>
-	      			</View>
 	      		</View>
+	      	</View>
       	</KeyboardAvoidingView>
       </View>
 	);
@@ -50,6 +92,14 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	textInputStyle: {
+		backgroundColor: 'transparent',
+		//margin: 5,
+		fontSize: 20,
+		alignSelf: 'stretch',
+		//borderWidth: 1,
+		//borderRadius: 4,
+	},
   container: {
     flex: 1,
     backgroundColor: 'red',
@@ -58,26 +108,57 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'column',
   },
+	nav: {
+		height: 200,
+		justifyContent: 'flex-end',
+	},
 
   noteStyle: {
   	backgroundColor: 'rgb(60, 180, 115)',
-  	height: '75%',
+  	//height: '75%',
+  	//width: '100%',
+  	flex: 1,
   	flexDirection: 'column',
-  	alignItems: 'center',
   	justifyContent: 'space-between',
-  	alignSelf: 'stretch',
   },
 
   buttonClearStyle: {
  	backgroundColor: 'rgb(240, 70, 70)',
+ 	width: '50%',
+
   },
 
   buttonSaveStyle: {
  	backgroundColor: '#3399ff',
+ 	width: '50%',
   },
 
   buttonStyle: {
  	height: 'auto',
   	alignSelf: 'stretch',
+  	flexDirection: 'row',
+  	justifyContent: 'center',
+  	width: '100%',
   }
 });
+
+//////////////////////////////////////////
+//Old code, to be removed!
+	// componentDidMount = () => { //Triggers the save function setTextToSave
+	// 	AsyncStorage.getItem(this.state.key).then(
+	// 		(value) => {
+	// 			console.log("id", this.state.key, "value", value);
+	// 			this.setState({text: value})
+	// 		}
+	// 	);
+	// }
+
+//Old code, to be removed!
+	// componentWillReceiveProps(nextProps) {
+	// 	AsyncStorage.getItem(this.state.key).then(
+	// 		(value) => {
+	// 			console.log('id', this.state.key, 'value', value);
+	// 			this.setState({text: value})
+	// 		}
+	// 	);
+	// }

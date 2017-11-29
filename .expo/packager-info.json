@@ -1,8 +1,8 @@
 {
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 4824,
+  "expoServerNgrokUrl": "https://jj-mqx.joelpaulsson.komaapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.jj-mqx.joelpaulsson.komaapp.exp.direct",
+  "ngrokPid": 4838
 }
