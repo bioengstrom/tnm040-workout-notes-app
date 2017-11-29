@@ -11,13 +11,13 @@ let validDates = [
 ];
 
 const weekDayButtons = [
-  {text: 'MON', pressed: false},
-  {text: 'TUE', pressed: false},
-  {text: 'WED', pressed: false},
-  {text: 'THU', pressed: false},
-  {text: 'FRI', pressed: false},
-  {text: 'SAT', pressed: false},
-  {text: 'SUN', pressed: false},
+  {text: 'MON'},
+  {text: 'TUE'},
+  {text: 'WED'},
+  {text: 'THU'},
+  {text: 'FRI'},
+  {text: 'SAT'},
+  {text: 'SUN'},
 ];
 
 export default class CalendarNew extends Component{
@@ -29,12 +29,7 @@ export default class CalendarNew extends Component{
     };
   }
 
-  updateWeekDifference = () => {
-    ++this.weekDifference;
-    () => this.setState({weekDifference: this.weekDifference});
-
-  }
-
+/*
   _incrementCount = () => {
      this.setState(prevState => ({ weekDifference: prevState.weekDifference + 1 }));
      // prevState => this.setState({weekDifference: prevState+1})
@@ -42,6 +37,11 @@ export default class CalendarNew extends Component{
 
    _decrementCount = () => {
      this.setState(prevState => ({weekDifference: prevState.weekDifference - 1}));
+   }
+*/
+   _updateWeekDifference = (command) => {
+     if(command=='next') this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
+     if(command=='prev') this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
    }
 
   render() {
@@ -52,13 +52,13 @@ export default class CalendarNew extends Component{
     return (
       <View>
         <View style={styles.container}>
-            <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._decrementCount()}>
-            <Image source={require("./left-arrow-black.png")} style={styles.icon} />
-            </TouchableOpacity>
-            {renderedButtons}
-            <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._incrementCount()}>
-            <Image source={require("./right-arrow-black.png")} style={styles.icon}/>
-            </TouchableOpacity>
+          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._updateWeekDifference('prev')}>
+            <Image style={styles.icon} source={require("./left-arrow-black.png")} />
+          </TouchableOpacity>
+        {renderedButtons}
+          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._updateWeekDifference('next')}>
+            <Image style={styles.icon} source={require("./right-arrow-black.png")} />
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -78,10 +78,24 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",
+    width: 40,
+    height: 50,
+
+
 	},
 	icon: {
+
 		resizeMode: "contain",
     height: 20,
     width: 20,
+
 	},
+  buttonPrev: {
+    marginLeft: 30,
+    backgroundColor: 'white',
+  },
+  buttonNext: {
+    marginLeft: -10,
+    backgroundColor: 'white',
+  },
 });
