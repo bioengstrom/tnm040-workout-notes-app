@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image, Button, TouchableOpacity, } from 'react-native';
 import moment from 'moment';
+import DayButton from './DayButton.js';
 
 let validDates = [
   {
@@ -10,109 +11,98 @@ let validDates = [
 ];
 
 let weekDayButtons = [
-  {text: 'MON', state: {pressStatus: false}},
-  {text: 'TUE', state: {pressStatus: false}},
-  {text: 'WED', state: {pressStatus: false}},
-  {text: 'THU', state: {pressStatus: false}},
-  {text: 'FRI', state: {pressStatus: false}},
-  {text: 'SAT', state: {pressStatus: false}},
-  {text: 'SUN', state: {pressStatus: false}},
+  {text: 'MON', pressed: false},
+  {text: 'TUE', pressed: false},
+  {text: 'WED', pressed: false},
+  {text: 'THU', pressed: false},
+  {text: 'FRI', pressed: false},
+  {text: 'SAT', pressed: false},
+  {text: 'SUN', pressed: false},
 ];
 
-export default class CalendarNew extends Component {
+export default class CalendarNew extends Component{
   constructor(props){
     super(props);
-    this.state = {pressStatus: false};
+    this.state={
+      currentButton: false,
+      weekDifference: 0,
+    };
+    this.select = this.select.bind(this);
   }
 
-  _onHideUnderlay(){
-    this.setState({ pressStatus: false });
-  }
-  _onShowUnderlay(){
-    this.setState({ pressStatus: true });
-  }
+    /*setStartState(){
+      if(format().format('dddd').substring(0,3).toLowerCase() ==
+    }*/
+    updateWeekDifference = (command) => {
+     if(command=='next') this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
+     if(command=='prev') this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
+    }
 
-  buttonTest = () => {
-    Alert.alert("Pressed");
-    console.log("button pressed");
-  }
+    select(hej) {
+      console.log(hej);
+
+      this.setState({
+        //selected: weather,
+        currentButton: hej,
+
+      })
+    }
 
   render() {
+    const renderedButtons = weekDayButtons.map((day) => {
+      if(day.text!=this.state)
+        day.pressed=false;
 
-    const renderedButtons = weekDayButtons.map(b => {
-      return(
-        <TouchableHighlight
-          activeOpacity={1}
-          underlayColor="transparent"
-          key={b.text}
-          onPress={this.buttonTest}
-          style={ this.state.pressStatus ? styles.weekDayButtonOnPress : styles.weekDayButton }
-          onHideUnderlay={this._onHideUnderlay.bind(this)}
-          onShowUnderlay={this._onShowUnderlay.bind(this)}
-        >
-        <Text style={this.state.pressStatus ? styles.weekDayButtonTextOnPress : styles.weekDayButtonText}>{b.text}</Text>
-        </TouchableHighlight>
-      );
+      return(<DayButton key={day.text} text={day.text} pressed={day.pressed} currentWeek={this.state.weekDifference} select={this.select} curr={this.state.currentButton}/>);
     });
 
     return (
-      <View style={styles.container}>
-        <TouchableHighlight
-          activeOpacity={1}
-          underlayColor="transparent"
-          onPress={this.buttonTest}
-          style={ this.state.pressStatus?styles.weekDayButtonOnPress:styles.weekDayButton }
-          onHideUnderlay={this._onHideUnderlay.bind(this)}
-          onShowUnderlay={this._onShowUnderlay.bind(this)}
-        >
-          <Text style={this.state.pressStatus ? styles.weekDayButtonTextOnPress : styles.weekDayButtonText}>M</Text>
-        </TouchableHighlight>
+      <View>
         <View style={styles.container}>
-          {renderedButtons}
+          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this.updateWeekDifference('prev')}>
+            <Image style={styles.icon} source={require("./left-arrow-black.png")} />
+          </TouchableOpacity>
+        {renderedButtons}
+          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this.updateWeekDifference('next')}>
+            <Image style={styles.icon} source={require("./right-arrow-black.png")} />
+          </TouchableOpacity>
         </View>
       </View>
     );
   }
 }
-const roundShapeScale = 50;
+
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
-    backgroundColor: 'lightblue',
+    //flex: 1
+    backgroundColor: '#4682B4',
     alignItems: 'stretch',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignSelf: 'stretch',
     flexDirection: 'row',
   },
-  weekDayButton: {
-    width: roundShapeScale,
-    height: roundShapeScale,
-    borderRadius: roundShapeScale/2,
-    borderWidth: 2,
-    borderColor: 'white',
-    backgroundColor: 'transparent',
+	iconContainer: {
+		justifyContent: "center",
+		alignItems: "center",
+		alignSelf: "center",
+    width: 50,
+    height: 50,
+    backgroundColor: 'black',
 
-  },
-  weekDayButtonOnPress: {
-    width: roundShapeScale,
-    height: roundShapeScale,
-    borderRadius: roundShapeScale/2,
-    borderWidth: 2,
-    borderColor: 'grey',
-    backgroundColor: 'transparent',
-  },
-  weekDayButtonText: {
-    marginTop: 5,
-    textAlign: 'center',
-    color: 'black',
-    fontSize: 12,
-  },
-  weekDayButtonTextOnPress: {
-    marginTop: 5,
-    textAlign: 'center',
-    color: 'grey',
-    fontSize: 12,
-  },
+	},
+	icon: {
 
-
+		resizeMode: "contain",
+    height: 20,
+    width: 20,
+    backgroundColor: 'white',
+	},
+  buttonPrev: {
+    marginLeft: 30,
+    backgroundColor: 'white',
+  },
+  buttonNext: {
+    marginLeft: -10,
+    backgroundColor: 'white',
+  },
 });

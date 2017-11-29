@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage} from 'react-native';
+import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
 //import Note from './notes.js';
 import renderIf from './renderIf.js';
 import Calendar from './Calendar.js';
@@ -58,10 +58,12 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-      <Calendar/>
+				<View style={styles.Nav}>
+      		<CalendarNew/>
+				</View>
 				<View style={styles.nav}>
-					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
-					<Button onPress={this.handleClick2} color="#ffffff" title='id2'/>
+					{/*<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>*/}
+					{/*}<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'*/}
 				</View>
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
 			{/*<Note text={this.state.text} id={this.state.key}>*/}
@@ -77,14 +79,26 @@ export default class App extends React.Component {
 								returnKeyType = {'none'}
 							/>
 						</View>
-      			<View style={styles.buttonStyle}>
+						<View style={styles.buttonStyle}>
+							<TouchableOpacity onPress={Keyboard.dismiss}>
+								<View style={styles.buttonSaveStyle}>
+							  	<Text style={styles.buttonText}>Save</Text>
+								</View>
+							</TouchableOpacity>
+							<TouchableOpacity onPress={this.clearNote}>
+								<View style={styles.buttonClearStyle}>
+									<Text style={styles.buttonText}>Clear</Text>
+								</View>
+							</TouchableOpacity>
+						</View>
+      			{/*}<View style={styles.buttonStyle}>
 			   		<View style={styles.buttonSaveStyle}>
 			   			<Button onPress={Keyboard.dismiss} color="#ffffff" title='Spara'/>
 		      	</View>
 		      	<View style={styles.buttonClearStyle}>
 		     			<Button onPress={this.clearNote} color="#ffffff" title='Rensa'/>
 	      		</View>
-	      	</View>
+	      	</View>*/}
       	</KeyboardAvoidingView>
       </View>
 	);
@@ -100,6 +114,9 @@ const styles = StyleSheet.create({
 		//borderWidth: 1,
 		//borderRadius: 4,
 	},
+	Nav: {
+		marginTop: '20%',
+	},
   container: {
     flex: 1,
     backgroundColor: 'red',
@@ -108,6 +125,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'column',
   },
+
+	//To be removed!
 	nav: {
 		height: 200,
 		justifyContent: 'flex-end',
@@ -124,17 +143,20 @@ const styles = StyleSheet.create({
 
   buttonClearStyle: {
  	backgroundColor: 'rgb(240, 70, 70)',
- 	width: '50%',
+ 	width: '100%',
 
   },
 
   buttonSaveStyle: {
  	backgroundColor: '#3399ff',
- 	width: '50%',
-  },
+ 	width: 100,
+	alignSelf: 'center',
+},
 
   buttonStyle: {
- 	height: 'auto',
+		flex: 1,
+		height: '50%',
+		minHeight: "30%",
   	alignSelf: 'stretch',
   	flexDirection: 'row',
   	justifyContent: 'center',
