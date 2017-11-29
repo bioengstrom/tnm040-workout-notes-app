@@ -6,20 +6,9 @@ import moment from 'moment';
 export default class DayButton extends Component{
   constructor(props){
     super(props);
-    this.state={
-      pressStatus: this.setInitialState(),
-    };
   }
 
-  setInitialState(){
-    if(this.props.text.toString().toLowerCase()==moment().format('dddd').substring(0,3).toLowerCase()) return true;
-    else return false;
-  }
 
-  _onPress(){
-    //this.setState({pressStatus: true);
-    this.setState({pressStatus: !this.state.pressStatus}); //to be removed
-  }
 
   //To be deleted, logging button presses.
   buttonTest = () => {
@@ -37,7 +26,7 @@ export default class DayButton extends Component{
       let currentLoopDay = moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
-        if(returnFormat=='dayNumberFormat') return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
+        if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
       }
     }
     return ('-'); //if the loop isn't working, return "-".
@@ -59,14 +48,11 @@ export default class DayButton extends Component{
 
     return(
       <View>
-        <TouchableOpacity
-          onPress={select}
-          onPressOut={() => this.setState({pressStatus: false})}
-        >
-          <View style={[this.state.pressStatus?styles.weekDayButtonOnPress:styles.weekDayButton]}>
+        <TouchableOpacity onPress={select}>
+          <View style={[this.props.pressed?styles.weekDayButtonOnPress:styles.weekDayButton]}>
             <Text style={this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[styles.buttonText,this.highlightToday('notPressed')]}>
               <Text>{this.props.text}{"\n"}</Text>
-              <Text style={styles.dateAlign}>{this.setDates('dayNumberFormat')}</Text>
+              <Text style={styles.dateAlign}>{this.setDates()}</Text>
             </Text>
           </View>
         </TouchableOpacity>
