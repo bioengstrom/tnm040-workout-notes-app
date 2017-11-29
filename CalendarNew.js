@@ -10,53 +10,60 @@ let validDates = [
   }
 ];
 
-const weekDayButtons = [
-  {text: 'MON'},
-  {text: 'TUE'},
-  {text: 'WED'},
-  {text: 'THU'},
-  {text: 'FRI'},
-  {text: 'SAT'},
-  {text: 'SUN'},
+let weekDayButtons = [
+  {text: 'MON', pressed: false},
+  {text: 'TUE', pressed: false},
+  {text: 'WED', pressed: false},
+  {text: 'THU', pressed: false},
+  {text: 'FRI', pressed: false},
+  {text: 'SAT', pressed: false},
+  {text: 'SUN', pressed: false},
 ];
 
 export default class CalendarNew extends Component{
   constructor(props){
     super(props);
     this.state={
-      currentButton: moment().format('dddd').substring(0,3).toLowerCase(),
+      currentButton: false,
       weekDifference: 0,
     };
+    this.select = this.select.bind(this);
   }
 
-/*
-  _incrementCount = () => {
-     this.setState(prevState => ({ weekDifference: prevState.weekDifference + 1 }));
-     // prevState => this.setState({weekDifference: prevState+1})
-   }
-
-   _decrementCount = () => {
-     this.setState(prevState => ({weekDifference: prevState.weekDifference - 1}));
-   }
-*/
-   _updateWeekDifference = (command) => {
+    /*setStartState(){
+      if(format().format('dddd').substring(0,3).toLowerCase() ==
+    }*/
+    updateWeekDifference = (command) => {
      if(command=='next') this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
      if(command=='prev') this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
-   }
+    }
+
+    select(hej) {
+      console.log(hej);
+
+      this.setState({
+        //selected: weather,
+        currentButton: hej,
+
+      })
+    }
 
   render() {
-    const renderedButtons = weekDayButtons.map(b => {
-      return(<DayButton key={b.text} text={b.text} pressed={b.pressed} currentWeek={this.state.weekDifference}/>);
+    const renderedButtons = weekDayButtons.map((day) => {
+      if(day.text!=this.state)
+        day.pressed=false;
+
+      return(<DayButton key={day.text} text={day.text} pressed={day.pressed} currentWeek={this.state.weekDifference} select={this.select} curr={this.state.currentButton}/>);
     });
 
     return (
       <View>
         <View style={styles.container}>
-          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._updateWeekDifference('prev')}>
+          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this.updateWeekDifference('prev')}>
             <Image style={styles.icon} source={require("./left-arrow-black.png")} />
           </TouchableOpacity>
         {renderedButtons}
-          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this._updateWeekDifference('next')}>
+          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this.updateWeekDifference('next')}>
             <Image style={styles.icon} source={require("./right-arrow-black.png")} />
           </TouchableOpacity>
         </View>
@@ -78,9 +85,9 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",
-    width: 40,
+    width: 50,
     height: 50,
-
+    backgroundColor: 'black',
 
 	},
 	icon: {
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
 		resizeMode: "contain",
     height: 20,
     width: 20,
-
+    backgroundColor: 'white',
 	},
   buttonPrev: {
     marginLeft: 30,

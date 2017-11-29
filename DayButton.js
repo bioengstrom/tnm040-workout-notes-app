@@ -31,6 +31,7 @@ export default class DayButton extends Component{
 
   //Sets the current weeks dates inside the day buttons.
   setDates(returnFormat){
+    //console.log(moment().format('L'));
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay = moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
@@ -52,14 +53,18 @@ export default class DayButton extends Component{
   }
 
   render() {
+    const select = () => {
+      this.props.select(this.props.text);
+    }
+
     return(
       <View>
         <TouchableOpacity
-          onPress={this._onPress.bind(this)}
+          onPress={select}
           onPressOut={() => this.setState({pressStatus: false})}
         >
           <View style={[this.state.pressStatus?styles.weekDayButtonOnPress:styles.weekDayButton]}>
-            <Text style={this.state.pressStatus?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[styles.buttonText,this.highlightToday('notPressed')]}>
+            <Text style={this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[styles.buttonText,this.highlightToday('notPressed')]}>
               <Text>{this.props.text}{"\n"}</Text>
               <Text style={styles.dateAlign}>{this.setDates('dayNumberFormat')}</Text>
             </Text>
