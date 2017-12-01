@@ -87,7 +87,7 @@ export default class CalendarNew extends Component{
 const styles = StyleSheet.create({
   container: {
     //flex: 1
-    //backgroundColor: 'rgba(255, 255, 255, 1.0)',//'#4682B4',
+    //backgroundColor: 'rgba(255, 255, 255, 1.0)',//'#4682B4', 
     alignItems: 'stretch',
     justifyContent: 'center',
     alignSelf: 'stretch',

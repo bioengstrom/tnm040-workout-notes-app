@@ -20,7 +20,6 @@ export default class DayButton extends Component{
 
   //Sets the current weeks dates inside the day buttons.
   setDates(returnFormat){
-    //console.log(moment().format('L'));
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay = moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
@@ -34,10 +33,10 @@ export default class DayButton extends Component{
 
   //Sets a different style (color) for today's button.
   highlightToday(status){
-    let todaysDate=this.setDates('uniqueFormat')
+    let todaysDate=this.setDates('uniqueFormat');
     if(todaysDate==moment().format('L')){
-      if(status=='pressed') return{color: 'rgba(0, 0, 0, 1.0)',}
-      if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',}
+      if(status=='pressed') return{color: 'rgba(0, 0, 0, 1.0)',};
+      if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',};
     }
   }
 
@@ -49,8 +48,13 @@ export default class DayButton extends Component{
     return(
       <View>
         <TouchableOpacity onPress={select}>
+<<<<<<< HEAD
           <View style={[this.props.pressed?styles.weekDayButtonOnPress:styles.weekDayButton]}>
             <Text style={this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[styles.buttonText,this.highlightToday('notPressed')]}>
+=======
+          <View style={this.props.pressed?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
+            <Text style={[styles.buttonText, this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
+>>>>>>> 911263c6892238a224c4b2c9f0152c319c9d6fbc
               <Text>{this.props.text}{"\n"}</Text>
               <Text style={styles.dateAlign}>{this.setDates()}</Text>
             </Text>
@@ -73,25 +77,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   weekDayButtonOnPress: {
-    marginLeft: -5,
-    width: roundShapeScale,
-    height: roundShapeScale,
-    borderRadius: roundShapeScale/2,
-    borderWidth: 0.75,
     borderColor: 'rgba(255, 255, 255, 1.0)',
-    backgroundColor: 'transparent',
   },
   buttonText: {
     marginTop: 8,
     textAlign: 'center',
-    color: 'rgba(255, 255, 255, 1.0)',
     fontSize: 10,
+    color: 'rgba(255, 255, 255, 1.0)',
   },
   buttonTextOnPress: {
-    marginTop: 8,
-    textAlign: 'center',
     color: 'rgba(0, 0, 0, 1.0)',
-    fontSize: 10,
   },
   dateAlign:{
     alignSelf: 'center',
