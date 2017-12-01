@@ -48,13 +48,10 @@ export default class DayButton extends Component{
     return(
       <View>
         <TouchableOpacity onPress={select}>
-<<<<<<< HEAD
-          <View style={[this.props.pressed?styles.weekDayButtonOnPress:styles.weekDayButton]}>
-            <Text style={this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[styles.buttonText,this.highlightToday('notPressed')]}>
-=======
+
           <View style={this.props.pressed?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
             <Text style={[styles.buttonText, this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
->>>>>>> 911263c6892238a224c4b2c9f0152c319c9d6fbc
+
               <Text>{this.props.text}{"\n"}</Text>
               <Text style={styles.dateAlign}>{this.setDates()}</Text>
             </Text>
@@ -77,13 +74,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   weekDayButtonOnPress: {
-    borderColor: 'rgba(255, 255, 255, 1.0)',
+    borderColor: 'rgba(0, 0, 0, 1.0)',
   },
   buttonText: {
     marginTop: 8,
     textAlign: 'center',
     fontSize: 10,
-    color: 'rgba(255, 255, 255, 1.0)',
+    color: 'rgba(0, 0, 0, 1.0)',
   },
   buttonTextOnPress: {
     color: 'rgba(0, 0, 0, 1.0)',

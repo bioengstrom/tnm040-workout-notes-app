@@ -71,11 +71,11 @@ export default class CalendarNew extends Component{
     return (
       <View>
         <View style={styles.container}>
-          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this.updateWeekDifference('prev')}>
+          <TouchableOpacity style={[styles.iconContainerLeft]} onPress={() => this.updateWeekDifference('prev')}>
             <Image style={styles.icon} source={require("./left-arrow-black.png")} />
           </TouchableOpacity>
         {renderedButtons}
-          <TouchableOpacity style={[styles.iconContainer]} onPress={() => this.updateWeekDifference('next')}>
+          <TouchableOpacity style={[styles.iconContainerRight]} onPress={() => this.updateWeekDifference('next')}>
             <Image style={styles.icon} source={require("./right-arrow-black.png")} />
           </TouchableOpacity>
         </View>
@@ -87,34 +87,46 @@ export default class CalendarNew extends Component{
 const styles = StyleSheet.create({
   container: {
     //flex: 1
-    //backgroundColor: 'rgba(255, 255, 255, 1.0)',//'#4682B4', 
+    //backgroundColor: 'rgba(255, 255, 255, 1.0)',//'#4682B4',
     alignItems: 'stretch',
     justifyContent: 'center',
     alignSelf: 'stretch',
     flexDirection: 'row',
   },
-	iconContainer: {
+	iconContainerLeft: {
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",
     width: 50,
     height: 50,
-    backgroundColor: 'black',
+    paddingLeft: 20,
+
+    //backgroundColor: 'black',
 
 	},
-	icon: {
+  iconContainerRight: {
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    width: 50,
+    height: 50,
+    paddingRight: 20,
 
+    //backgroundColor: 'black',
+
+  },
+	icon: {
 		resizeMode: "contain",
     height: 20,
     width: 20,
-    backgroundColor: 'white',
-	},
-  buttonPrev: {
-    marginLeft: 30,
-    backgroundColor: 'white',
-  },
-  buttonNext: {
-    marginLeft: -10,
-    backgroundColor: 'white',
-  },
+    //backgroundColor: 'white',
+	 },
+  // buttonPrev: {
+  //   marginLeft: 30,
+  //   backgroundColor: 'white',
+  // },
+  // buttonNext: {
+  //   marginLeft: -10,
+  //   backgroundColor: 'white',
+  // },
 });

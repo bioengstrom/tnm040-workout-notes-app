@@ -116,7 +116,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 	textInputStyle: {
 		backgroundColor: 'transparent',
-		padding: 5,
+		padding: 15,
 		fontSize: 20,
 		alignSelf: 'stretch',
 		//borderWidth: 1,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     //backgroundColor: 'red',
-		backgroundColor: 'rgba(169, 229, 212, 0.4)',
+		//backgroundColor: 'rgba(169, 229, 212, 0.4)',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     alignSelf: 'stretch',
@@ -140,7 +140,11 @@ const styles = StyleSheet.create({
   },
   noteStyle: {
   	//backgroundColor: '#A9E5D4',
+		borderTopWidth: 1,
+		borderColor: '#C7C7CD',
   	flex: 1,
+		marginTop: 10,
+		paddingTop: 10,
   	flexDirection: 'column',
   	justifyContent: 'space-between',
   },
