@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 // https://stackoverflow.com/questions/34815382/react-unselect-from-list-while-selecting-another-item
@@ -8,17 +8,7 @@ export default class DayButton extends Component{
     super(props);
   }
 
-
-
-  //To be deleted, logging button presses.
-  buttonTest = () => {
-    let printMessage=this.props.text.toString().toLowerCase();
-    Alert.alert(printMessage);
-    console.log(moment().format('DD'));
-    Alert.alert(this.props.bro);
-  }
-
-  //Sets the current weeks dates inside the day buttons.
+  //Sets the current week's dates inside the day buttons.
   setDates(returnFormat){
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
@@ -41,28 +31,22 @@ export default class DayButton extends Component{
   }
 
   buttonPressed(){
-    let pressed = false;
-    if(this.props.sentPressedDate==this.setDates('uniqueFormat')) pressed = true;
-
-
-
-    return pressed;
+    if(this.props.pressedDate==this.setDates('uniqueFormat')) return true;
+    return false;
   }
 
-  render() {
+  render(){
     const getPressedDate = () => {
       this.props.getPressedDate(this.setDates('uniqueFormat'));
     }
 
     return(
-      <View>
-        <TouchableOpacity style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton} onPress={getPressedDate}>
-              <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
-                <Text>{this.props.text}{"\n"}</Text>
-                <Text style={styles.dateAlign}>{this.setDates()}</Text>
-              </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton} onPress={getPressedDate}>
+        <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
+          <Text>{this.props.text}{"\n"}</Text>
+          <Text style={styles.dateAlign}>{this.setDates()}</Text>
+        </Text>
+      </TouchableOpacity>
     );
   }
 }
@@ -94,20 +78,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 16,
     fontWeight: 'bold'
-  },
-  roundShape:{
-    justifyContent: "center",
-    //alignItems: "center",
-    //alignSelf: "center",
-    width: 30,
-    height: 30,
-    borderRadius: 30/2,
-    borderWidth: 0.75,
-    borderColor: 'red',
-    backgroundColor: 'pink',
-  },
-
-  hey: {
-    backgroundColor: 'red',
   },
 });

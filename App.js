@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingVie
 //import Note from './notes.js';
 import renderIf from './renderIf.js';
 import moment from 'moment';
-import CalendarNew from './CalendarNew.js';
+import Calendar from './Calendar.js';
 
 console.log("Initiation successful!")
 
@@ -71,7 +71,7 @@ export default class App extends React.Component {
 				<View style={styles.Nav}>
       		<Text>LOGO</Text>
 				</View>
-					<CalendarNew getPressedDate={this.getPressedDate} sendPressedDate={this.state.key}/>
+					<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key}/>
 				{/*<View style={styles.nav}>
 					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
 					<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'
