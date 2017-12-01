@@ -62,7 +62,7 @@ export default class CalendarNew extends Component{
       if(this.state.currentButton=='starty') {
         if(dagText==idag) day.pressed=true;
       }
-      
+
       console.log(day.pressed.toString() + ' ' + dagText + ' ' + idag);
 
       return(<DayButton key={day.text} text={day.text} pressed={day.pressed} currentWeek={this.state.weekDifference} select={this.select}/>);
@@ -87,7 +87,7 @@ export default class CalendarNew extends Component{
 const styles = StyleSheet.create({
   container: {
     //flex: 1
-    backgroundColor: '#4682B4',
+    //backgroundColor: 'rgba(255, 255, 255, 1.0)',//'#4682B4',
     alignItems: 'stretch',
     justifyContent: 'center',
     alignSelf: 'stretch',

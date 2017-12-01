@@ -59,18 +59,19 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
 				<View style={styles.Nav}>
-      		<CalendarNew/>
+      		<Text>LOGO</Text>
 				</View>
-				<View style={styles.nav}>
-					{/*<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>*/}
-					{/*}<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'*/}
-				</View>
+					<CalendarNew/>
+				{/*<View style={styles.nav}>
+					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
+					<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'
+				</View>*/}
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
 			{/*<Note text={this.state.text} id={this.state.key}>*/}
 						<View>
 							<TextInput style={styles.textInputStyle}
 								editable = {true}
-								placeholder = "Skriv ner ditt pass här."  //Placeholder
+								placeholder = "Log your workout here..."  //Placeholder
 								maxLength = {300} //Maximum number of characters
 								multiline = {true} //Multiple lines
 								numberOfLines = {100} //Only for Android, need to find solution for IOS
@@ -79,19 +80,26 @@ export default class App extends React.Component {
 								returnKeyType = {'none'}
 							/>
 						</View>
+
 						<View style={styles.buttonStyle}>
-							<TouchableOpacity onPress={Keyboard.dismiss}>
-								<View style={styles.buttonSaveStyle}>
-							  	<Text style={styles.buttonText}>Save</Text>
-								</View>
-							</TouchableOpacity>
-							<TouchableOpacity onPress={this.clearNote}>
-								<View style={styles.buttonClearStyle}>
-									<Text style={styles.buttonText}>Clear</Text>
-								</View>
-							</TouchableOpacity>
+							<View style={styles.buttonSaveStyle}>
+								<TouchableOpacity onPress={Keyboard.dismiss}>
+									{/*<View style={styles.buttonSaveStyle}>*/}
+								  	<Text style={styles.buttonText}>Save</Text>
+									{/*</View>*/}
+								</TouchableOpacity>
+							</View>
+							<View style={styles.buttonClearStyle}>
+								<TouchableOpacity onPress={this.clearNote}>
+									{/*<View style={styles.buttonClearStyle}>*/}
+										<Text style={styles.buttonText}>Clear</Text>
+									{/*</View>*/}
+								</TouchableOpacity>
+							</View>
 						</View>
-      			{/*}<View style={styles.buttonStyle}>
+
+
+      			{/*<View style={styles.buttonStyle}>
 			   		<View style={styles.buttonSaveStyle}>
 			   			<Button onPress={Keyboard.dismiss} color="#ffffff" title='Spara'/>
 		      	</View>
@@ -108,60 +116,61 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 	textInputStyle: {
 		backgroundColor: 'transparent',
-		//margin: 5,
+		padding: 5,
 		fontSize: 20,
 		alignSelf: 'stretch',
 		//borderWidth: 1,
 		//borderRadius: 4,
 	},
 	Nav: {
-		marginTop: '20%',
+		height: '15%' ,
+		//backgroundColor: 'rgba(169, 229, 212, 0.5)',
+		flexDirection:'row',
+		alignItems:'center',
+		justifyContent:'center'
 	},
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    //backgroundColor: 'red',
+		backgroundColor: 'rgba(169, 229, 212, 0.4)',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     alignSelf: 'stretch',
     flexDirection: 'column',
   },
-
-	//To be removed!
-	nav: {
-		height: 200,
-		justifyContent: 'flex-end',
-	},
-
   noteStyle: {
-  	backgroundColor: 'rgb(60, 180, 115)',
-  	//height: '75%',
-  	//width: '100%',
+  	//backgroundColor: '#A9E5D4',
   	flex: 1,
   	flexDirection: 'column',
   	justifyContent: 'space-between',
   },
-
-  buttonClearStyle: {
- 	backgroundColor: 'rgb(240, 70, 70)',
- 	width: '100%',
-
+	buttonStyle: {
+		backgroundColor: 'white',
+		height: 'auto',
+		minHeight: '12%',
+		width: '100%',
+		flexDirection: 'row',
+		//justifyContent: 'center',
+		//alignSelf:'center',
   },
-
-  buttonSaveStyle: {
- 	backgroundColor: '#3399ff',
- 	width: 100,
-	alignSelf: 'center',
-},
-
-  buttonStyle: {
+  buttonClearStyle: {
 		flex: 1,
-		height: '50%',
-		minHeight: "30%",
-  	alignSelf: 'stretch',
-  	flexDirection: 'row',
-  	justifyContent: 'center',
-  	width: '100%',
-  }
+		justifyContent: 'center',
+		backgroundColor: 'rgba(250, 169, 22, 0.7)',
+		//backgroundColor: 'rgba(164, 194, 219, 1.0)',
+  },
+  buttonSaveStyle: {
+		flex: 1,
+		justifyContent: 'center',
+		//backgroundColor: '#4eca6d',
+		backgroundColor: 'rgba(164, 194, 219, 1.0)',
+		//backgroundColor: 'rgba(78, 202, 78, 0.7)',
+	},
+	buttonText: {
+		fontSize: 28,
+		textAlign:'center',
+
+	}
 });
 
 //////////////////////////////////////////
