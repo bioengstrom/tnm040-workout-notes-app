@@ -24,7 +24,6 @@ export default class DayButton extends Component{
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay = moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
-      //if(this.props.getDate==currentLoopDay.format('L')){
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
         if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
       }
@@ -32,7 +31,7 @@ export default class DayButton extends Component{
     return ('-'); //if the loop isn't working, return "-".
   }
 
-  //Sets a different style (color) for today's button.
+  //Sets a different style for today's button.
   highlightToday(status){
     let todaysDate=this.setDates('uniqueFormat');
     if(todaysDate==moment().format('L')){
@@ -44,7 +43,7 @@ export default class DayButton extends Component{
   buttonPressed(){
     let pressed = false;
     if(this.props.sentPressedDate==this.setDates('uniqueFormat')) pressed = true;
-    
+
 
 
     return pressed;
@@ -55,22 +54,13 @@ export default class DayButton extends Component{
       this.props.getPressedDate(this.setDates('uniqueFormat'));
     }
 
-/*
-    const select = () => {
-      this.props.getDate(this.props.text);
-    }
-*/
     return(
       <View>
-        <TouchableOpacity onPress={getPressedDate}>
-
-          <View style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
-            <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
-
-              <Text>{this.props.text}{"\n"}</Text>
-              <Text style={styles.dateAlign}>{this.setDates()}</Text>
-            </Text>
-          </View>
+        <TouchableOpacity style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton} onPress={getPressedDate}>
+              <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
+                <Text>{this.props.text}{"\n"}</Text>
+                <Text style={styles.dateAlign}>{this.setDates()}</Text>
+              </Text>
         </TouchableOpacity>
       </View>
     );
@@ -104,5 +94,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 16,
     fontWeight: 'bold'
+  },
+  roundShape:{
+    justifyContent: "center",
+    //alignItems: "center",
+    //alignSelf: "center",
+    width: 30,
+    height: 30,
+    borderRadius: 30/2,
+    borderWidth: 0.75,
+    borderColor: 'red',
+    backgroundColor: 'pink',
+  },
+
+  hey: {
+    backgroundColor: 'red',
   },
 });

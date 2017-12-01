@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
 //import Note from './notes.js';
 import renderIf from './renderIf.js';
-import Calendar from './Calendar.js';
-import CalendarNew from './CalendarNew.js';
-
 import moment from 'moment';
+import CalendarNew from './CalendarNew.js';
 
 console.log("Initiation successful!")
 
