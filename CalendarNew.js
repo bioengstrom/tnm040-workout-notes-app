@@ -39,7 +39,7 @@ export default class CalendarNew extends Component{
     }
 
     select(hej) {
-      console.log(hej);
+      //console.log(hej);
 
       this.setState({
         //selected: weather,
@@ -53,7 +53,8 @@ export default class CalendarNew extends Component{
       //console.log(day.pressed.toString() + ' ' + day.text.toString());
       //console.log(day.text);
       //console.log(moment().format('dddd').substring(0,3));
-      console.log(this.state.currentButton);
+      //console.log(this.state.currentButton);
+/*
       let dagText=day.text.toString().toLowerCase();
       let idag = moment().format('dddd').substring(0,3).toLowerCase();
       if(day.text!=this.state.currentButton) day.pressed=false;
@@ -62,10 +63,10 @@ export default class CalendarNew extends Component{
       if(this.state.currentButton=='starty') {
         if(dagText==idag) day.pressed=true;
       }
+*/
+      //console.log(day.pressed.toString() + ' ' + dagText + ' ' + idag);
 
-      console.log(day.pressed.toString() + ' ' + dagText + ' ' + idag);
-
-      return(<DayButton key={day.text} text={day.text} pressed={day.pressed} currentWeek={this.state.weekDifference} select={this.select}/>);
+      return(<DayButton key={day.text} getPressedDate={this.props.getPressedDate} sentPressedDate={this.props.sendPressedDate} text={day.text} newPressed={this.props.get} pressed={day.pressed} currentWeek={this.state.weekDifference} select={this.select}/>);
     });
 
     return (

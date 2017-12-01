@@ -24,6 +24,7 @@ export default class DayButton extends Component{
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay = moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
+      //if(this.props.getDate==currentLoopDay.format('L')){
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
         if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
       }
@@ -40,17 +41,31 @@ export default class DayButton extends Component{
     }
   }
 
+  buttonPressed(){
+    let pressed = false;
+    if(this.props.sentPressedDate==this.setDates('uniqueFormat')) pressed = true;
+    
+
+
+    return pressed;
+  }
+
   render() {
-    const select = () => {
-      this.props.select(this.props.text);
+    const getPressedDate = () => {
+      this.props.getPressedDate(this.setDates('uniqueFormat'));
     }
 
+/*
+    const select = () => {
+      this.props.getDate(this.props.text);
+    }
+*/
     return(
       <View>
-        <TouchableOpacity onPress={select}>
+        <TouchableOpacity onPress={getPressedDate}>
 
-          <View style={this.props.pressed?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
-            <Text style={[styles.buttonText, this.props.pressed?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
+          <View style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
+            <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
 
               <Text>{this.props.text}{"\n"}</Text>
               <Text style={styles.dateAlign}>{this.setDates()}</Text>
