@@ -5,6 +5,8 @@ import renderIf from './renderIf.js';
 import Calendar from './Calendar.js';
 import CalendarNew from './CalendarNew.js';
 
+import moment from 'moment';
+
 console.log("Initiation successful!")
 
 //var myKey = "1";
@@ -13,10 +15,20 @@ export default class App extends React.Component {
 
 	constructor(props) {
 		super();
-		this.state = {text: null , key: '0'}; // Default key is set to null, change to current date. AA,JP
+		this.state = {text: null , key: moment().format('L')}; // Default key is set to null, change to current date. AA,JP
 		this.clearNote = this.clearNote.bind(this);
 		this.handleClick1 = this.handleClick1.bind(this);
 		this.handleClick2 = this.handleClick2.bind(this);
+
+		this.getPressedDate = this.getPressedDate.bind(this);
+	}
+
+	getPressedDate(inDate) {
+		console.log("hi " + inDate);
+
+		this.setState({
+			key: inDate,
+		})
 	}
 
 //Clear current note. AA, JP
@@ -25,11 +37,11 @@ export default class App extends React.Component {
 			this.setState({text: ''});
 		console.log('Text cleared'); //Debugging
 	}
-
+//this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
 //OK, but replace '1' with clicked date as variable. AA,JP
 	handleClick1() {
 		this.setState({key: '1'});
-		AsyncStorage.getItem('1').then(
+		AsyncStorage.getItem({key: '1'}).then(
 			(value) => {
 				console.log("id", this.state.key, "value", value);
 				this.setState({text: value})
@@ -61,7 +73,7 @@ export default class App extends React.Component {
 				<View style={styles.Nav}>
       		<Text>LOGO</Text>
 				</View>
-					<CalendarNew/>
+					<CalendarNew getPressedDate={this.getPressedDate} sendPressedDate={this.state.key}/>
 				{/*<View style={styles.nav}>
 					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
 					<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'
