@@ -11,19 +11,23 @@ export default class DayButton extends Component{
   //Sets the current week's dates inside the day buttons.
   setDates(returnFormat){
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
+
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
-      let currentLoopDay = moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
+      let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
+
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
         if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
       }
     }
+
     return ('-'); //if the loop isn't working, return "-".
   }
 
   //Sets a different style for today's button.
   highlightToday(status){
     let todaysDate=this.setDates('uniqueFormat');
+
     if(todaysDate==moment().format('L')){
       if(status=='pressed') return{color: 'rgba(0, 0, 0, 1.0)',};
       if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',};

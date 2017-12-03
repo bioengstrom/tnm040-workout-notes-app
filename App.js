@@ -17,16 +17,20 @@ export default class App extends React.Component {
 		this.clearNote = this.clearNote.bind(this);
 		this.handleClick1 = this.handleClick1.bind(this);
 		this.handleClick2 = this.handleClick2.bind(this);
+		this.handleClick3 = this.handleClick3.bind(this);
 
 		this.getPressedDate = this.getPressedDate.bind(this);
+		this.handleClick3();
 	}
 
 	getPressedDate(inDate) {
-		console.log("hi " + inDate);
+		//console.log("Date of pressed button: " + inDate);
 
 		this.setState({
 			key: inDate,
-		})
+		});
+
+		this.handleClick3();
 	}
 
 //Clear current note. AA, JP
@@ -35,13 +39,29 @@ export default class App extends React.Component {
 			this.setState({text: ''});
 		console.log('Text cleared'); //Debugging
 	}
-//this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
-//OK, but replace '1' with clicked date as variable. AA,JP
+
+	handleClick3() {
+		AsyncStorage.getItem(this.state.key).then(
+			(value) => {
+				console.log("id " + this.state.key + " value " + value);
+				this.setState({text: value})
+			}
+		);
+	}
+
+	/*
+	async handleClick3() {
+		let yo = await AsyncStorage.getItem(this.state.key);
+		this.setState({text: yo});
+	}
+	*/
+
+	//OK, but replace '1' with clicked date as variable. AA,JP
 	handleClick1() {
 		this.setState({key: '1'});
-		AsyncStorage.getItem({key: '1'}).then(
+		AsyncStorage.getItem('1').then(
 			(value) => {
-				console.log("id", this.state.key, "value", value);
+				console.log("id " + this.state.key + " value " + value);
 				this.setState({text: value})
 			}
 		);
@@ -64,17 +84,17 @@ export default class App extends React.Component {
 	}
 
   render() {
-		console.log(this.state.key, ' saved with: ', this.state.text);
+		//console.log(this.state.key, ' saved with: ', this.state.text);
 
     return (
       <View style={styles.container}>
 				<View style={styles.Nav}>
       		<Text>LOGO</Text>
 				</View>
-					<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key}/>
+				<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key}/>
 				{/*<View style={styles.nav}>
-					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
-					<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'
+					<Button onPress={this.handleClick1} color="black" title='id1'/>
+					<Button onPress={this.handleClick2} color="pink" title='id2'/>
 				</View>*/}
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
 			{/*<Note text={this.state.text} id={this.state.key}>*/}
