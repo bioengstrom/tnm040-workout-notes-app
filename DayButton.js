@@ -14,7 +14,7 @@ export default class DayButton extends Component{
 
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
-
+      
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
         if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 10,
     color: 'rgba(0, 0, 0, 1.0)',
+    backgroundColor: 'transparent',
   },
   buttonTextOnPress: {
     color: 'rgba(0, 0, 0, 1.0)',
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
   dateAlign:{
     alignSelf: 'center',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    backgroundColor: 'transparent',
   },
 });

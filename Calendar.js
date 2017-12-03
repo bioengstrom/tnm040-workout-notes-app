@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
+import MonthAndYear from './MonthAndYear.js';
 import DayButton from './DayButton.js';
 
 /*
@@ -14,7 +15,7 @@ let validDates = [
 const lowLimit = -520;
 const highLimit = 520;
 
-let weekDayButtons = [
+const weekDayButtons = [
   {text: 'MON'},
   {text: 'TUE'},
   {text: 'WED'},
@@ -43,14 +44,18 @@ export default class Calendar extends Component{
     });
 
     return(
-      <View style={styles.container}>
-        <TouchableOpacity style={[styles.iconContainer, styles.iconContainerLeft]} onPress={() => this.updateWeekDifference('prev')}>
-          <Image style={styles.icon} source={require("./chevrons/chevronLeft.png")}/>
-        </TouchableOpacity>
-        {renderedButtons}
-        <TouchableOpacity style={[styles.iconContainer, styles.iconContainerRight]} onPress={() => this.updateWeekDifference('next')}>
-          <Image style={styles.icon} source={require("./chevrons/chevronRight.png")}/>
-        </TouchableOpacity>
+      <View>
+        <MonthAndYear currentWeek={this.state.weekDifference}/>
+
+        <View style={styles.container}>
+          <TouchableOpacity style={[styles.iconContainer, styles.iconContainerLeft]} onPress={() => this.updateWeekDifference('prev')}>
+            <Image style={styles.icon} source={require("./chevrons/chevronLeft.png")}/>
+          </TouchableOpacity>
+          {renderedButtons}
+          <TouchableOpacity style={[styles.iconContainer, styles.iconContainerRight]} onPress={() => this.updateWeekDifference('next')}>
+            <Image style={styles.icon} source={require("./chevrons/chevronRight.png")}/>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
