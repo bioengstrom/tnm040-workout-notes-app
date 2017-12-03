@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 5176,
-  "expoServerNgrokUrl": "https://jj-mqx.rustyfooley.komaapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.jj-mqx.rustyfooley.komaapp.exp.direct",
-  "ngrokPid": 1196
+  "packagerPid": 12932,
+  "expoServerNgrokUrl": "https://ex-5ag.rustyfooley.komaapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.ex-5ag.rustyfooley.komaapp.exp.direct",
+  "ngrokPid": 1876
 }

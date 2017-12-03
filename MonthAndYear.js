@@ -16,7 +16,7 @@ export default class MonthAndYear extends Component{
   }
 
   setMonthAndYear(){
-    let returnString;
+    let returnString = "-";
 
     if(parseInt(this.getDate(startOfWeek).format('D')) > parseInt(this.getDate(endOfWeek).format('D'))){
       returnString = this.getDate(startOfWeek).format('MMM') + " ";
@@ -27,13 +27,13 @@ export default class MonthAndYear extends Component{
 
     returnString += " " + this.getDate(endOfWeek).format('YYYY')
 
-    return returnString; //if the loop isn't working, return "-".
+    return returnString;
   }
 
   render(){
     return(
       <View>
-        <Text style={styles.testy}>
+        <Text style={styles.monthAndYearText}>
           {this.setMonthAndYear()}
         </Text>
       </View>
@@ -43,7 +43,7 @@ export default class MonthAndYear extends Component{
 
 
 const styles = StyleSheet.create({
-  testy: {
+  monthAndYearText: {
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignSelf: 'flex-end',

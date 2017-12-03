@@ -46,7 +46,6 @@ export default class Calendar extends Component{
     return(
       <View>
         <MonthAndYear currentWeek={this.state.weekDifference}/>
-
         <View style={styles.container}>
           <TouchableOpacity style={[styles.iconContainer, styles.iconContainerLeft]} onPress={() => this.updateWeekDifference('prev')}>
             <Image style={styles.icon} source={require("./chevrons/chevronLeft.png")}/>
