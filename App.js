@@ -5,6 +5,7 @@ import renderIf from './renderIf.js';
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
+Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
 console.log("Initiation successful!")
 
 //var myKey = "1";
@@ -12,6 +13,8 @@ console.log("Initiation successful!")
 export default class App extends React.Component {
 
 	constructor(props) {
+
+
 		super();
 		this.state = {text: null , key: moment().format('L')}; // Default key is set to null, change to current date. AA,JP
 		this.clearNote = this.clearNote.bind(this);
