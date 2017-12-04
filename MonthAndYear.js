@@ -15,6 +15,10 @@ export default class MonthAndYear extends Component{
     return (moment().startOf('isoweek').add(dayOfWeek+(7*this.props.currentWeek),'day'));
   }
 
+  setWeek(){
+    return ("Week " + this.getDate(startOfWeek).format('ww') + " ");
+  }
+
   setMonthAndYear(){
     let returnString = "-";
 
@@ -33,18 +37,30 @@ export default class MonthAndYear extends Component{
   render(){
     return(
       <View>
-        <Text style={styles.monthAndYearText}>
-          {this.setMonthAndYear()}
+        <Text>
+          <Text style={styles.weekText}>
+            {this.setWeek()}
+          </Text>
+          <Text style={styles.monthAndYearText}>
+            {this.setMonthAndYear()}
+          </Text>
         </Text>
       </View>
+
     );
   }
 }
 
 
 const styles = StyleSheet.create({
+  weekText: {
+    backgroundColor: 'olive',
+
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+  },
   monthAndYearText: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'pink',
     justifyContent: 'center',
     alignSelf: 'flex-end',
     //alignSelf: 'center',

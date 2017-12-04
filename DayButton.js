@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
-// https://stackoverflow.com/questions/34815382/react-unselect-from-list-while-selecting-another-item
 export default class DayButton extends Component{
   constructor(props){
     super(props);
@@ -14,7 +13,7 @@ export default class DayButton extends Component{
 
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
-      
+
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
         if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
@@ -45,7 +44,7 @@ export default class DayButton extends Component{
     }
 
     return(
-      <TouchableOpacity style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton} onPress={getPressedDate}>
+      <TouchableOpacity onPress={getPressedDate} style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
         <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
           <Text>{this.props.text}{"\n"}</Text>
           <Text style={styles.dateAlign}>{this.setDates()}</Text>

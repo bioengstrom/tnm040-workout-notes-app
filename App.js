@@ -13,22 +13,21 @@ console.log("Initiation successful!")
 export default class App extends React.Component {
 
 	constructor(props) {
+		super(props);
 
-
-		super();
 		this.state = {text: null , key: moment().format('L')}; // Default key is set to null, change to current date. AA,JP
+
 		this.clearNote = this.clearNote.bind(this);
 		this.handleClick1 = this.handleClick1.bind(this);
 		this.handleClick2 = this.handleClick2.bind(this);
 		this.handleClick3 = this.handleClick3.bind(this);
-
 		this.getPressedDate = this.getPressedDate.bind(this);
+
 		this.handleClick3();
 	}
 
 	getPressedDate(inDate) {
 		//console.log("Date of pressed button: " + inDate);
-
 		this.setState({
 			key: inDate,
 		});

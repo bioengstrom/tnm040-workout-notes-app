@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import moment from 'moment';
 import MonthAndYear from './MonthAndYear.js';
 import DayButton from './DayButton.js';
 
-/*
-let validDates = [
-  {
-    start: moment().subtract(1000, 'days'),
-    end: moment().add(1000, 'days')
-  }
-];
-*/
-const lowLimit = -520;
-const highLimit = 520;
+const lowLimit = -5200;
+const highLimit = 5200;
 
 const weekDayButtons = [
   {text: 'MON'},
@@ -33,12 +25,65 @@ export default class Calendar extends Component{
     };
   }
 
-  updateWeekDifference = (command) => {
-    if(command=='next' && this.state.weekDifference < highLimit) this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
-    if(command=='prev' && this.state.weekDifference > lowLimit) this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
+  scrollLimitReached = (argument) => {
+    if(argument=='low' && this.state.weekDifference <= lowLimit+1) return true;
+    if(argument=='high' && this.state.weekDifference >= highLimit-1) return true;
+
+    return false;
+  }
+
+  updateWeekDifference = (argument) => {
+    //if(argument=='prev' && this.state.weekDifference > lowLimit) this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
+    //if(argument=='next' && this.state.weekDifference < highLimit) this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
+
+    if(argument=='prev' && this.state.weekDifference > lowLimit) this.setState({weekDifference: --this.state.weekDifference});
+    else if(argument=='prev' && this.state.weekDifference <= lowLimit) {
+      Alert.alert(
+        'Lower scroll limit reached',
+        "Want to go back to the current week?",
+        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'Dismiss', style: 'cancel'}],
+        {cancelable: false}
+      );
+    }
+
+    if(argument=='next' && this.state.weekDifference < highLimit) this.setState({weekDifference: ++this.state.weekDifference});
+    else if(argument=='next' && this.state.weekDifference >= highLimit){
+      Alert.alert(
+        'Higher scroll limit reached',
+        "Want to go back to the current week?",
+        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'Dismiss', style: 'cancel'}],
+        {cancelable: false}
+      );
+    }
+
+
+    //if(this.state.weekDifference <= lowLimit+1) this.setState({weekDifference: lowLimit});
+
+    //console.log(this.state.weekDifference);
+    /*
+    if(this.scrollLimitReached('low')){
+      Alert.alert(
+        'Lower scroll limit reached',
+        "Want to go back to the current week?",
+        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'No'}],
+        { cancelable: false }
+      );
+    }
+    if(this.scrollLimitReached('high')){
+      Alert.alert(
+        'Higher scroll limit reached',
+        "Want to go back to the current week?",
+        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'No'}],
+        { cancelable: false }
+      );
+    }
+    */
+
+
   }
 
   render() {
+    console.log(this.state.weekDifference);
     const renderedButtons = weekDayButtons.map((day) => {
       return(<DayButton key={day.text} text={day.text} getPressedDate={this.props.getPressedDate} pressedDate={this.props.pressedDate} currentWeek={this.state.weekDifference}/>);
     });
@@ -47,11 +92,11 @@ export default class Calendar extends Component{
       <View>
         <MonthAndYear currentWeek={this.state.weekDifference}/>
         <View style={styles.container}>
-          <TouchableOpacity style={[styles.iconContainer, styles.iconContainerLeft]} onPress={() => this.updateWeekDifference('prev')}>
+          <TouchableOpacity onPress={() => this.updateWeekDifference('prev')} style={[styles.iconContainer, styles.iconContainerLeft, this.scrollLimitReached('low')?{opacity: 0.25}:{opacity: 1},]}>
             <Image style={styles.icon} source={require("./chevrons/chevronLeft.png")}/>
           </TouchableOpacity>
           {renderedButtons}
-          <TouchableOpacity style={[styles.iconContainer, styles.iconContainerRight]} onPress={() => this.updateWeekDifference('next')}>
+          <TouchableOpacity onPress={() => this.updateWeekDifference('next')} style={[styles.iconContainer, styles.iconContainerRight, this.scrollLimitReached('high')?{opacity: 0.25}:{opacity: 1},]}>
             <Image style={styles.icon} source={require("./chevrons/chevronRight.png")}/>
           </TouchableOpacity>
         </View>
@@ -86,5 +131,12 @@ const styles = StyleSheet.create({
 		resizeMode: "contain",
     height: 20,
     width: 20,
-	 },
+	},
+  noFade: {
+    opacity: 1,
+  },
+  fade: {
+    opacity: 0.25,
+  },
+
 });
