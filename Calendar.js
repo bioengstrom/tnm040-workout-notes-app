@@ -4,8 +4,8 @@ import moment from 'moment';
 import MonthAndYear from './MonthAndYear.js';
 import DayButton from './DayButton.js';
 
-const lowLimit = -5200;
-const highLimit = 5200;
+const lowLimit = -5;
+const highLimit = 5;
 
 const weekDayButtons = [
   {text: 'MON'},

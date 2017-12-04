@@ -37,14 +37,12 @@ export default class MonthAndYear extends Component{
   render(){
     return(
       <View>
-        <Text>
           <Text style={styles.weekText}>
             {this.setWeek()}
           </Text>
           <Text style={styles.monthAndYearText}>
             {this.setMonthAndYear()}
           </Text>
-        </Text>
       </View>
 
     );
@@ -58,6 +56,12 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     alignSelf: 'flex-start',
+    marginLeft: 40,
+    marginBottom: -15,
+
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'darkkhaki',
   },
   monthAndYearText: {
     backgroundColor: 'pink',
