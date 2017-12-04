@@ -62,12 +62,7 @@ export default class App extends React.Component {
       		<Text>LOGO</Text>
 				</View>
 					<CalendarNew/>
-				{/*<View style={styles.nav}>
-					<Button onPress={this.handleClick1} color="#ffffff" title='id1'/>
-					<Button onPress={this.handleClick2} color="#ffffff" title='id2/>'
-				</View>*/}
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
-			{/*<Note text={this.state.text} id={this.state.key}>*/}
 						<View>
 							<TextInput style={styles.textInputStyle}
 								editable = {true}
@@ -80,33 +75,22 @@ export default class App extends React.Component {
 								returnKeyType = {'none'}
 							/>
 						</View>
-
 						<View style={styles.buttonStyle}>
 							<View style={styles.buttonSaveStyle}>
 								<TouchableOpacity onPress={Keyboard.dismiss}>
-									{/*<View style={styles.buttonSaveStyle}>*/}
+									<View style={styles.clickBox}>
 								  	<Text style={styles.buttonText}>Save</Text>
-									{/*</View>*/}
+									</View>
 								</TouchableOpacity>
 							</View>
 							<View style={styles.buttonClearStyle}>
 								<TouchableOpacity onPress={this.clearNote}>
-									{/*<View style={styles.buttonClearStyle}>*/}
+									<View style={styles.clickBox}>
 										<Text style={styles.buttonText}>Clear</Text>
-									{/*</View>*/}
+									</View>
 								</TouchableOpacity>
 							</View>
 						</View>
-
-
-      			{/*<View style={styles.buttonStyle}>
-			   		<View style={styles.buttonSaveStyle}>
-			   			<Button onPress={Keyboard.dismiss} color="#ffffff" title='Spara'/>
-		      	</View>
-		      	<View style={styles.buttonClearStyle}>
-		     			<Button onPress={this.clearNote} color="#ffffff" title='Rensa'/>
-	      		</View>
-	      	</View>*/}
       	</KeyboardAvoidingView>
       </View>
 	);
@@ -149,7 +133,6 @@ const styles = StyleSheet.create({
   	justifyContent: 'space-between',
   },
 	buttonStyle: {
-		backgroundColor: 'white',
 		height: 'auto',
 		minHeight: '12%',
 		width: '100%',
@@ -158,22 +141,47 @@ const styles = StyleSheet.create({
 		//alignSelf:'center',
   },
   buttonClearStyle: {
+
+//Option 1
+		// borderRadius: 10,
+		// marginLeft: 5,
+		// marginRight: 10,
+		// marginBottom: 10,
+
+
+
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: 'rgba(250, 169, 22, 0.7)',
+		backgroundColor: '#e8e8e3',
+		//backgroundColor: '#C7C7CD',
+		//backgroundColor: 'rgba(250, 169, 22, 0.7)',
 		//backgroundColor: 'rgba(164, 194, 219, 1.0)',
   },
   buttonSaveStyle: {
+
+	//Option 1
+		// borderRadius: 10,
+		// marginLeft: 10,
+		// marginRight: 5,
+		// marginBottom: 10,
+
 		flex: 1,
 		justifyContent: 'center',
 		//backgroundColor: '#4eca6d',
 		backgroundColor: 'rgba(164, 194, 219, 1.0)',
 		//backgroundColor: 'rgba(78, 202, 78, 0.7)',
+
+	},
+	clickBox: {
+		//Sets size of clickable area, set a backgroundColor to check! JP
+		justifyContent: 'center',
+		height: 100,
+		margin: 10,
+
 	},
 	buttonText: {
 		fontSize: 28,
 		textAlign:'center',
-
 	}
 });
 
