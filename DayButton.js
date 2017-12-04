@@ -54,19 +54,26 @@ export default class DayButton extends Component{
   }
 }
 
-const roundShapeScale=50;
+const roundShapeScale=45;
 const styles = StyleSheet.create({
   weekDayButton: {
-    marginLeft: -5,
     width: roundShapeScale,
-    height: roundShapeScale,
-    borderRadius: roundShapeScale/2,
+    height: roundShapeScale+7.5,
+    borderColor: 'rgba(0, 0, 0, 1.0)',
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     borderWidth: 0.75,
-    borderColor: 'transparent',
-    backgroundColor: 'transparent',
   },
   weekDayButtonOnPress: {
-    borderColor: 'rgba(0, 0, 0, 1.0)',
+    borderTopWidth: 0.75,
+    borderLeftWidth: 0.75,
+    borderRightWidth: 0.75,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomWidth: 0,
+    borderColor: 'black',
+    backgroundColor: 'transparent',
   },
   buttonText: {
     marginTop: 8,
