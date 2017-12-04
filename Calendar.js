@@ -25,47 +25,53 @@ export default class Calendar extends Component{
     };
   }
 
+  returnToStartWeek(){
+    if(this.props.returnToStartWeek==true){
+      this.props.getWeekDifference(0);
+
+    }
+  }
   scrollLimitReached = (argument) => {
-    if(argument=='low' && this.state.weekDifference <= lowLimit+1) return true;
-    if(argument=='high' && this.state.weekDifference >= highLimit-1) return true;
+    if(argument=='low' && this.props.weekDifference <= lowLimit+1) return true;
+    if(argument=='high' && this.props.weekDifference >= highLimit-1) return true;
 
     return false;
   }
 
   updateWeekDifference = (argument) => {
-    //if(argument=='prev' && this.state.weekDifference > lowLimit) this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
-    //if(argument=='next' && this.state.weekDifference < highLimit) this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
+    //if(argument=='prev' && this.props.weekDifference > lowLimit) this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
+    //if(argument=='next' && this.props.weekDifference < highLimit) this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
 
-    if(argument=='prev' && this.state.weekDifference > lowLimit) this.setState({weekDifference: --this.state.weekDifference});
-    else if(argument=='prev' && this.state.weekDifference <= lowLimit) {
+    if(argument=='prev' && this.props.weekDifference > lowLimit) this.props.getWeekDifference(--this.props.weekDifference);
+    else if(argument=='prev' && this.props.weekDifference <= lowLimit) {
       Alert.alert(
         'Lower scroll limit reached',
         "Want to go back to the current week?",
-        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'Dismiss', style: 'cancel'}],
+        [{text: 'Yes', onPress: () => this.props.getWeekDifference(0)}, {text: 'Dismiss', style: 'cancel'}],
         {cancelable: false}
       );
     }
 
-    if(argument=='next' && this.state.weekDifference < highLimit) this.setState({weekDifference: ++this.state.weekDifference});
-    else if(argument=='next' && this.state.weekDifference >= highLimit){
+    if(argument=='next' && this.props.weekDifference < highLimit) this.props.getWeekDifference(++this.props.weekDifference);
+    else if(argument=='next' && this.props.weekDifference >= highLimit){
       Alert.alert(
         'Higher scroll limit reached',
         "Want to go back to the current week?",
-        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'Dismiss', style: 'cancel'}],
+        [{text: 'Yes', onPress: () => this.props.getWeekDifference(0)}, {text: 'Dismiss', style: 'cancel'}],
         {cancelable: false}
       );
     }
 
 
-    //if(this.state.weekDifference <= lowLimit+1) this.setState({weekDifference: lowLimit});
+    //if(this.props.weekDifference <= lowLimit+1) this.props.getWeekDifference(lowLimit);
 
-    //console.log(this.state.weekDifference);
+    //console.log(this.props.weekDifference);
     /*
     if(this.scrollLimitReached('low')){
       Alert.alert(
         'Lower scroll limit reached',
         "Want to go back to the current week?",
-        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'No'}],
+        [{text: 'Yes', onPress: () => this.props.getweekDifference(0)}, {text: 'No'}],
         { cancelable: false }
       );
     }
@@ -73,24 +79,22 @@ export default class Calendar extends Component{
       Alert.alert(
         'Higher scroll limit reached',
         "Want to go back to the current week?",
-        [{text: 'Yes', onPress: () => this.setState({weekDifference: 0})}, {text: 'No'}],
+        [{text: 'Yes', onPress: () => this.props.getweekDifference(0)}, {text: 'No'}],
         { cancelable: false }
       );
     }
     */
-
-
   }
 
   render() {
-    console.log(this.state.weekDifference);
+    //console.log(this.props.weekDifference);
     const renderedButtons = weekDayButtons.map((day) => {
-      return(<DayButton key={day.text} text={day.text} getPressedDate={this.props.getPressedDate} pressedDate={this.props.pressedDate} currentWeek={this.state.weekDifference}/>);
+      return(<DayButton key={day.text} text={day.text} getPressedDate={this.props.getPressedDate} pressedDate={this.props.pressedDate} currentWeek={this.props.weekDifference}/>);
     });
 
     return(
       <View>
-        <MonthAndYear currentWeek={this.state.weekDifference}/>
+        <MonthAndYear currentWeek={this.props.weekDifference}/>
         <View style={styles.container}>
           <TouchableOpacity onPress={() => this.updateWeekDifference('prev')} style={[styles.iconContainer, styles.iconContainerLeft, this.scrollLimitReached('low')?{opacity: 0.25}:{opacity: 1},]}>
             <Image style={styles.icon} source={require("./chevrons/chevronLeft.png")}/>

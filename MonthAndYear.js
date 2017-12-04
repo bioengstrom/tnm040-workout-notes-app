@@ -37,14 +37,13 @@ export default class MonthAndYear extends Component{
   render(){
     return(
       <View style={styles.testy}>
-          <Text style={styles.weekText}>
-            {this.setWeek()}
-          </Text>
-          <Text style={styles.monthAndYearText}>
-            {this.setMonthAndYear()}
-          </Text>
+        <Text style={styles.weekText}>
+          {this.setWeek()}
+        </Text>
+        <Text style={styles.monthAndYearText}>
+          {this.setMonthAndYear()}
+        </Text>
       </View>
-
     );
   }
 }
