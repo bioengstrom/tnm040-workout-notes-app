@@ -3,10 +3,7 @@ import {StyleSheet, Text, View, Button, Image, TextInput, Keyboard, KeyboardAvoi
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
-Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
 console.log("Initiation successful!")
-
-var keyVar = moment().format('L');
 
 export default class App extends React.Component {
 
@@ -16,14 +13,11 @@ export default class App extends React.Component {
 		this.state = {text: null , key: moment().format('L')}; // Default key is set to null, change to current date. AA,JP
 
 		this.clearNote = this.clearNote.bind(this);
-		this.handleClick1 = this.handleClick1.bind(this);
-		this.handleClick2 = this.handleClick2.bind(this);
-		this.handleClick3 = this.handleClick3.bind(this);
+
+		this.handleDate = this.handleDate.bind(this);
 		this.getPressedDate = this.getPressedDate.bind(this);
 
-		this.handleClick3();
-
-		
+		this.handleDate(moment().format('L'));
 	}
 
 
@@ -33,9 +27,7 @@ export default class App extends React.Component {
 			key: inDate,
 		});
 
-		keyVar = inDate;
-
-		this.handleClick3();
+		this.handleDate(inDate);
 	}
 
 //Clear current note. AA, JP
@@ -45,39 +37,11 @@ export default class App extends React.Component {
 		console.log('Text cleared'); //Debugging
 	}
 
-	handleClick3() {
-		AsyncStorage.getItem(/*this.state.key*/ keyVar).then(
-			(value) => {
-				console.log("id " + /*this.state.key*/keyVar + " value " + value);
-				this.setState({text: value})
-			}
-		);
-	}
 
-	/*
-	async handleClick3() {
-		let yo = await AsyncStorage.getItem(this.state.key);
-		this.setState({text: yo});
-	}
-	*/
-
-	//OK, but replace '1' with clicked date as variable. AA,JP
-	handleClick1() {
-		this.setState({key: '1'});
-		AsyncStorage.getItem('1').then(
+	handleDate(inKey) {
+		AsyncStorage.getItem(inKey).then(
 			(value) => {
-				console.log("id " + this.state.key + " value " + value);
-				this.setState({text: value})
-			}
-		);
-	}
-
-//OK!
-	handleClick2() {
-		this.setState({key: '2'});
-		AsyncStorage.getItem('2').then(
-			(value) => {
-				console.log("id", '2', "value", value);
+				console.log("id " + inKey + " value " + value);
 				this.setState({text: value})
 			}
 		);
