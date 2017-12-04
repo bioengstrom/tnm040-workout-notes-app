@@ -36,7 +36,7 @@ export default class MonthAndYear extends Component{
 
   render(){
     return(
-      <View>
+      <View style={styles.testy}>
           <Text style={styles.weekText}>
             {this.setWeek()}
           </Text>
@@ -52,21 +52,21 @@ export default class MonthAndYear extends Component{
 
 const styles = StyleSheet.create({
   weekText: {
-    backgroundColor: 'olive',
+    //backgroundColor: 'olive',
 
-    justifyContent: 'center',
-    alignSelf: 'flex-start',
+    //justifyContent: 'center',
+    //alignSelf: 'flex-start',
     marginLeft: 40,
-    marginBottom: -15,
+    marginBottom: 15,
 
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'darkkhaki',
+    color: 'black',
   },
   monthAndYearText: {
-    backgroundColor: 'pink',
-    justifyContent: 'center',
-    alignSelf: 'flex-end',
+    //backgroundColor: 'pink',
+    //justifyContent: 'center',
+    //alignSelf: 'flex-end',
     //alignSelf: 'center',
 
     marginRight: 40,
@@ -74,6 +74,10 @@ const styles = StyleSheet.create({
 
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'darkkhaki',
+    color: 'black',
+  },
+  testy: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
 });

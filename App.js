@@ -5,6 +5,7 @@ import renderIf from './renderIf.js';
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
+Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP); 
 console.log("Initiation successful!")
 
 export default class App extends React.Component {
