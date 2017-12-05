@@ -85,16 +85,12 @@ export default class App extends React.Component {
 						<View style={styles.buttonStyle}>
 							<View style={styles.buttonSaveStyle}>
 								<TouchableOpacity onPress={Keyboard.dismiss}>
-									<View style={styles.clickBox}>
 								  	<Text style={styles.buttonText}>Save</Text>
-									</View>
 								</TouchableOpacity>
 							</View>
 							<View style={styles.buttonClearStyle}>
 								<TouchableOpacity onPress={this.clearNote}>
-									<View style={styles.clickBox}>
 										<Text style={styles.buttonText}>Clear</Text>
-									</View>
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -134,63 +130,47 @@ const styles = StyleSheet.create({
 	  justifyContent: 'space-between',
   },
 	buttonStyle: {
-		height: '12%',
-		minHeight: '5%',
 		width: 'auto',
 		flexDirection: 'row',
-		marginLeft: 10,
-		marginRight: 10,
-		marginBottom: 15,
+		justifyContent: 'center',
+		marginBottom: '7%', //Distance: buttons to Keyboard
   },
   buttonClearStyle: {
 		//box style
-		flex: 1,
+		width: '40%',
 		justifyContent: 'center',
 		backgroundColor: '#e8e8e3',
-		marginLeft: 5,
-		marginRight: 10,
-		marginBottom: 10,
-		marginTop: 10,
+		marginLeft: '2.5%',
 		//Shadow style
-		// borderWidth: 1,
-    // borderRadius: 2,
-    // borderColor: '#ddd',// To be changed to backgrounColor
-    // borderBottomWidth: 0,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-    // elevation: 1,
+		borderWidth: 1,
+    borderRadius: 2,
+    borderColor: '#e8e8e3', // To be changed to backgrounColor
+    borderBottomWidth: 0,
+    shadowColor: 'grey',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    elevation: 1,
   },
   buttonSaveStyle: {
 		//box style
-		flex: 1,
+		width: '40%',
 		justifyContent: 'center',
 		backgroundColor: 'rgba(164, 194, 219, 1.0)',
-		marginLeft: 10,
-		marginRight: 5,
-		marginBottom: 10,
-		marginTop: 10,
-		borderWidth: 1,
+		marginRight: '2.5%',
 		//Shadow style
-		// borderWidth: 1,
-		// borderRadius: 2,
-		// borderColor: '#ddd', // To be changed to backgrounColor
-		// borderBottomWidth: 0,
-		// shadowColor: '#000',
-		// shadowOffset: { width: 0, height: 2 },
-		// shadowOpacity: 0.8,
-		// shadowRadius: 2,
-		// elevation: 1,
-	},
-	clickBox: {
-		//Sets size of clickable area for save & clear!
-		justifyContent: 'center',
-		height: 100,
-		margin: 10,
+		borderWidth: 1,
+		borderRadius: 2,
+		borderColor: 'rgba(164, 194, 219, 1.0)', // To be changed to backgrounColor
+		borderBottomWidth: 0,
+		shadowColor: 'grey',
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.8,
+		shadowRadius: 1,
+		elevation: 1,
 	},
 	buttonText: {
-		fontSize: 28,
+		fontSize: 25,
 		textAlign:'center',
 	},
 	dateStyle: {
