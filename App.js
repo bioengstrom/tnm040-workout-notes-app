@@ -3,7 +3,8 @@ import {StyleSheet, Text, View, Button, Image, TextInput, Keyboard, KeyboardAvoi
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
-console.log("Initiation successful!")
+console.log("Initiation successful!");
+Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
 
 export default class App extends React.Component {
 
