@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
-//import Note from './notes.js';
-import renderIf from './renderIf.js';
+import {StyleSheet, Text, View, Button, Image, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
+Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
 console.log("Initiation successful!")
 
 export default class App extends React.Component {
@@ -12,24 +11,17 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {text: null , key: moment().format('L')}; // Default key is set to null, change to current date. AA,JP
+		this.state = {text: null, key: moment().format('L'), weekDifference: 0}; // Default key is set to null, change to current date. AA,JP
 
 		this.clearNote = this.clearNote.bind(this);
-/*
-		this.handleClick1 = this.handleClick1.bind(this);
-		this.handleClick2 = this.handleClick2.bind(this);
-*/
 		this.handleDate = this.handleDate.bind(this);
 		this.getPressedDate = this.getPressedDate.bind(this);
-
+		this.getWeekDifference = this.getWeekDifference.bind(this);
 		this.handleDate(moment().format('L'));
 	}
 
 	getPressedDate(inDate) {
-		//console.log("Date of pressed button: " + inDate);
-		this.setState({
-			key: inDate,
-		});
+		this.setState({key: inDate});
 		this.handleDate(inDate);
 	}
 
@@ -49,48 +41,31 @@ export default class App extends React.Component {
 		);
 	}
 
-/*
-	//OK, but replace '1' with clicked date as variable. AA,JP
-	handleClick1() {
-		this.setState({key: '1'});
-		AsyncStorage.getItem('1').then(
-			(value) => {
-				console.log("id " + this.state.key + " value " + value);
-				this.setState({text: value})
-			}
-		);
-	}
-
-//OK!
-	handleClick2() {
-		this.setState({key: '2'});
-		AsyncStorage.getItem('2').then(
-			(value) => {
-				console.log("id", '2', "value", value);
-				this.setState({text: value})
-			}
-		);
-	}
-*/
 
 //Function to save text. AA,JP
 	setTextToSave = (value) => {AsyncStorage.setItem(this.state.key, value); //Saves the text
 		this.setState({text: value});
 	}
 
-  render() {
-		//console.log(this.state.key, ' saved with: ', this.state.text);
+	returnHome = () => {
+		this.getPressedDate(moment().format('L'));
+		this.setState({weekDifference: 0});
+	}
 
+	getWeekDifference(inValue){
+		console.log(inValue);
+		this.setState({weekDifference: inValue});
+	}
+
+  render() {
     return (
       <View style={styles.container}>
 				<View style={styles.Nav}>
-      		<Text>LOGO</Text>
+      		<TouchableOpacity onPress={() => this.returnHome()} style={styles.logoStyle}>
+      			 <Image source={require("./logo.png")}/>
+      		</TouchableOpacity>
 				</View>
 				<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key}/>
-				{/*<View style={styles.nav}>
-					<Button onPress={this.handleClick1} color="black" title='id1'/>
-					<Button onPress={this.handleClick2} color="pink" title='id2'/>
-				</View>*/}
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
 						<View>
 							<TextInput style={styles.textInputStyle}
@@ -122,7 +97,7 @@ export default class App extends React.Component {
 						</View>
       	</KeyboardAvoidingView>
       </View>
-	);
+		);
 	}
 }
 
@@ -136,25 +111,24 @@ const styles = StyleSheet.create({
 	Nav: {
 		height: '15%' ,
 		//backgroundColor: 'rgba(169, 229, 212, 0.5)', To be decieded.
+		//marginTop: 10,
 		flexDirection:'row',
 		alignItems:'center',
-		justifyContent:'center'
+		justifyContent:'center',
 	},
   container: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    alignSelf: 'stretch',
-    flexDirection: 'column',
+	  flex: 1,
+		alignItems: 'stretch',
+		justifyContent: 'flex-start',
+		alignSelf: 'stretch',
+		flexDirection: 'column',
   },
   noteStyle: {
-		borderTopWidth: 1,
-		borderColor: '#C7C7CD',
-  	flex: 1,
+		flex: 1,
 		marginTop: 10,
 		paddingTop: 10,
-  	flexDirection: 'column',
-  	justifyContent: 'space-between',
+	  flexDirection: 'column',
+	  justifyContent: 'space-between',
   },
 	buttonStyle: {
 		height: '12%',
@@ -207,7 +181,7 @@ const styles = StyleSheet.create({
 		elevation: 1,
 	},
 	clickBox: {
-		//Sets size of clickable area for save & clear! 
+		//Sets size of clickable area for save & clear!
 		justifyContent: 'center',
 		height: 100,
 		margin: 10,
