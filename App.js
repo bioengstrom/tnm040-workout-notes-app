@@ -2,21 +2,35 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
 //import Note from './notes.js';
 import renderIf from './renderIf.js';
+import moment from 'moment';
 import Calendar from './Calendar.js';
-import CalendarNew from './CalendarNew.js';
 
 console.log("Initiation successful!")
-
-//var myKey = "1";
 
 export default class App extends React.Component {
 
 	constructor(props) {
-		super();
-		this.state = {text: null , key: '0'}; // Default key is set to null, change to current date. AA,JP
+		super(props);
+
+		this.state = {text: null , key: moment().format('L')}; // Default key is set to null, change to current date. AA,JP
+
 		this.clearNote = this.clearNote.bind(this);
+/*
 		this.handleClick1 = this.handleClick1.bind(this);
 		this.handleClick2 = this.handleClick2.bind(this);
+*/
+		this.handleDate = this.handleDate.bind(this);
+		this.getPressedDate = this.getPressedDate.bind(this);
+
+		this.handleDate(moment().format('L'));
+	}
+
+	getPressedDate(inDate) {
+		//console.log("Date of pressed button: " + inDate);
+		this.setState({
+			key: inDate,
+		});
+		this.handleDate(inDate);
 	}
 
 //Clear current note. AA, JP
@@ -26,12 +40,22 @@ export default class App extends React.Component {
 		console.log('Text cleared'); //Debugging
 	}
 
-//OK, but replace '1' with clicked date as variable. AA,JP
+	handleDate(inKey) {
+		AsyncStorage.getItem(inKey).then(
+			(value) => {
+				console.log("id " + inKey + " value " + value);
+				this.setState({text: value})
+			}
+		);
+	}
+
+/*
+	//OK, but replace '1' with clicked date as variable. AA,JP
 	handleClick1() {
 		this.setState({key: '1'});
 		AsyncStorage.getItem('1').then(
 			(value) => {
-				console.log("id", this.state.key, "value", value);
+				console.log("id " + this.state.key + " value " + value);
 				this.setState({text: value})
 			}
 		);
@@ -47,6 +71,7 @@ export default class App extends React.Component {
 			}
 		);
 	}
+*/
 
 //Function to save text. AA,JP
 	setTextToSave = (value) => {AsyncStorage.setItem(this.state.key, value); //Saves the text
@@ -54,14 +79,18 @@ export default class App extends React.Component {
 	}
 
   render() {
-		console.log(this.state.key, ' saved with: ', this.state.text);
+		//console.log(this.state.key, ' saved with: ', this.state.text);
 
     return (
       <View style={styles.container}>
 				<View style={styles.Nav}>
       		<Text>LOGO</Text>
 				</View>
-					<CalendarNew/>
+				<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key}/>
+				{/*<View style={styles.nav}>
+					<Button onPress={this.handleClick1} color="black" title='id1'/>
+					<Button onPress={this.handleClick2} color="pink" title='id2'/>
+				</View>*/}
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
 						<View>
 							<TextInput style={styles.textInputStyle}
@@ -103,27 +132,22 @@ const styles = StyleSheet.create({
 		padding: 15,
 		fontSize: 20,
 		alignSelf: 'stretch',
-		//borderWidth: 1,
-		//borderRadius: 4,
 	},
 	Nav: {
 		height: '15%' ,
-		//backgroundColor: 'rgba(169, 229, 212, 0.5)',
+		//backgroundColor: 'rgba(169, 229, 212, 0.5)', To be decieded.
 		flexDirection:'row',
 		alignItems:'center',
 		justifyContent:'center'
 	},
   container: {
     flex: 1,
-    //backgroundColor: 'red',
-		//backgroundColor: 'rgba(169, 229, 212, 0.4)',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     alignSelf: 'stretch',
     flexDirection: 'column',
   },
   noteStyle: {
-  	//backgroundColor: '#A9E5D4',
 		borderTopWidth: 1,
 		borderColor: '#C7C7CD',
   	flex: 1,
@@ -133,75 +157,63 @@ const styles = StyleSheet.create({
   	justifyContent: 'space-between',
   },
 	buttonStyle: {
-		height: 'auto',
-		minHeight: '12%',
-		width: '100%',
+		height: '12%',
+		minHeight: '5%',
+		width: 'auto',
 		flexDirection: 'row',
-		//justifyContent: 'center',
-		//alignSelf:'center',
+		marginLeft: 10,
+		marginRight: 10,
+		marginBottom: 15,
   },
   buttonClearStyle: {
-
-//Option 1
-		// borderRadius: 10,
-		// marginLeft: 5,
-		// marginRight: 10,
-		// marginBottom: 10,
-
-
-
+		//box style
 		flex: 1,
 		justifyContent: 'center',
 		backgroundColor: '#e8e8e3',
-		//backgroundColor: '#C7C7CD',
-		//backgroundColor: 'rgba(250, 169, 22, 0.7)',
-		//backgroundColor: 'rgba(164, 194, 219, 1.0)',
+		marginLeft: 5,
+		marginRight: 10,
+		marginBottom: 10,
+		marginTop: 10,
+		//Shadow style
+		borderWidth: 1,
+    borderRadius: 2,
+    borderColor: '#ddd',// To be changed to backgrounColor
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
   buttonSaveStyle: {
-
-	//Option 1
-		// borderRadius: 10,
-		// marginLeft: 10,
-		// marginRight: 5,
-		// marginBottom: 10,
-
+		//box style
 		flex: 1,
 		justifyContent: 'center',
-		//backgroundColor: '#4eca6d',
 		backgroundColor: 'rgba(164, 194, 219, 1.0)',
-		//backgroundColor: 'rgba(78, 202, 78, 0.7)',
-
+		marginLeft: 10,
+		marginRight: 5,
+		marginBottom: 10,
+		marginTop: 10,
+		borderWidth: 1,
+		//Shadow style
+		borderWidth: 1,
+		borderRadius: 2,
+		borderColor: '#ddd', // To be changed to backgrounColor
+		borderBottomWidth: 0,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.8,
+		shadowRadius: 2,
+		elevation: 1,
 	},
 	clickBox: {
-		//Sets size of clickable area, set a backgroundColor to check! JP
+		//Sets size of clickable area for save & clear! 
 		justifyContent: 'center',
 		height: 100,
 		margin: 10,
-
 	},
 	buttonText: {
 		fontSize: 28,
 		textAlign:'center',
 	}
 });
-
-//////////////////////////////////////////
-//Old code, to be removed!
-	// componentDidMount = () => { //Triggers the save function setTextToSave
-	// 	AsyncStorage.getItem(this.state.key).then(
-	// 		(value) => {
-	// 			console.log("id", this.state.key, "value", value);
-	// 			this.setState({text: value})
-	// 		}
-	// 	);
-	// }
-
-//Old code, to be removed!
-	// componentWillReceiveProps(nextProps) {
-	// 	AsyncStorage.getItem(this.state.key).then(
-	// 		(value) => {
-	// 			console.log('id', this.state.key, 'value', value);
-	// 			this.setState({text: value})
-	// 		}
-	// 	);
-	// }
