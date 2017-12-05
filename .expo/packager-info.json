@@ -1,16 +1,8 @@
 {
   "expoServerPort": 19000,
-<<<<<<< HEAD
   "packagerPort": 19001,
   "packagerPid": 7720,
   "expoServerNgrokUrl": "https://ie-ttm.rustyfooley.komaapp.exp.direct",
   "packagerNgrokUrl": "https://packager.ie-ttm.rustyfooley.komaapp.exp.direct",
   "ngrokPid": 15600
-=======
-  "packagerPort": 19002,
-  "packagerPid": 22258,
-  "expoServerNgrokUrl": "https://i6-jvw.joelpaulsson.komaapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.i6-jvw.joelpaulsson.komaapp.exp.direct",
-  "ngrokPid": 22273
->>>>>>> dfc610cb8e7fc35483d5029895f173cf86d775aa
 }
