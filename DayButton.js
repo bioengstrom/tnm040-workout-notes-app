@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, AsyncStorage} from 'react-native';
 import moment from 'moment';
 
 export default class DayButton extends Component{
@@ -8,7 +8,7 @@ export default class DayButton extends Component{
   }
 
   //Sets the current week's dates inside the day buttons.
-  setDates(returnFormat){
+  setDates = (returnFormat) => {
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
 
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
@@ -24,7 +24,7 @@ export default class DayButton extends Component{
   }
 
   //Sets a different style for today's button.
-  highlightToday(status){
+  highlightToday = (status) => {
     let todaysDate=this.setDates('uniqueFormat');
 
     if(todaysDate==moment().format('L')){
@@ -33,9 +33,25 @@ export default class DayButton extends Component{
     }
   }
 
-  buttonPressed(){
+  buttonPressed = () => {
     if(this.props.pressedDate==this.setDates('uniqueFormat')) return true;
     return false;
+  }
+
+
+  async workoutPlanned() {
+    await AsyncStorage.getItem(this.setDates('uniqueFormat')).then(
+      (value) => {
+        if(value != '' && value != null){
+          console.log(value + ' ' + this.setDates('uniqueFormat') + ' true');
+          return true;
+        }
+        else {
+          console.log(value + ' ' + this.setDates('uniqueFormat') + ' false');
+          return false;
+        }
+			}
+    ).done();
   }
 
   render(){
@@ -46,9 +62,15 @@ export default class DayButton extends Component{
     return(
       <TouchableOpacity onPress={getPressedDate} style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
         <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
-          <Text>{this.props.text}{"\n"}</Text>
-          <Text style={styles.dateAlign}>{this.setDates()}</Text>
+          <Text>
+            {this.props.text}{"\n"}
+          </Text>
+          <Text style={styles.dateAlign}>
+            {this.setDates()}
+          </Text>
         </Text>
+        <View style={[styles.planningIndicator, this.workoutPlanned()?styles.notPlanned:styles.planned]}>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -56,6 +78,21 @@ export default class DayButton extends Component{
 
 const roundShapeScale=45;
 const styles = StyleSheet.create({
+  planningIndicator: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 3,
+    width: 4,
+    height: 4,
+    borderRadius: 4/2,
+    //backgroundColor: 'olive',
+  },
+  notPlanned: {
+    backgroundColor: 'red',
+  },
+  planned: {
+    backgroundColor: 'grey',
+  },
   weekDayButton: {
     width: roundShapeScale,
     height: roundShapeScale+7.5,

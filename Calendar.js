@@ -4,8 +4,8 @@ import moment from 'moment';
 import MonthAndYear from './MonthAndYear.js';
 import DayButton from './DayButton.js';
 
-const lowLimit = -5;
-const highLimit = 5;
+const lowLimit = -520;
+const highLimit = 520;
 
 const weekDayButtons = [
   {text: 'MON'},
@@ -25,7 +25,7 @@ export default class Calendar extends Component{
     };
   }
 
-  returnToStartWeek(){
+  returnToStartWeek = () => {
     if(this.props.returnToStartWeek==true){
       this.props.getWeekDifference(0);
 
@@ -39,8 +39,6 @@ export default class Calendar extends Component{
   }
 
   updateWeekDifference = (argument) => {
-    //if(argument=='prev' && this.props.weekDifference > lowLimit) this.setState(prevState => ({weekDifference: --prevState.weekDifference}));
-    //if(argument=='next' && this.props.weekDifference < highLimit) this.setState(prevState => ({weekDifference: ++prevState.weekDifference}));
 
     if(argument=='prev' && this.props.weekDifference > lowLimit) this.props.getWeekDifference(--this.props.weekDifference);
     else if(argument=='prev' && this.props.weekDifference <= lowLimit) {

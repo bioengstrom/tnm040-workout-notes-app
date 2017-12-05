@@ -27,7 +27,7 @@ export default class App extends React.Component {
 
 //Clear current note. AA, JP
 	clearNote() {
-		AsyncStorage.setItem(/*this.state.key*/ this.state.key, ''); //Save the text
+		AsyncStorage.setItem(this.state.key, ''); //Save the text
 			this.setState({text: ''});
 		console.log('Text cleared'); //Debugging
 	}
