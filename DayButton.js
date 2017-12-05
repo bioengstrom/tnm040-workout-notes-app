@@ -69,7 +69,7 @@ export default class DayButton extends Component{
             {this.setDates()}
           </Text>
         </Text>
-        <View style={[styles.planningIndicator, this.workoutPlanned()?styles.notPlanned:styles.planned]}>
+        <View style={[ this.workoutPlanned()?[styles.planningIndicator, styles.notPlanned]:[styles.planningIndicator, styles.planned]]}>
         </View>
       </TouchableOpacity>
     );

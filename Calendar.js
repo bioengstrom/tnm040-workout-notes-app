@@ -20,9 +20,6 @@ const weekDayButtons = [
 export default class Calendar extends Component{
   constructor(props){
     super(props);
-    this.state={
-      weekDifference: 0,
-    };
   }
 
   returnToStartWeek = () => {
