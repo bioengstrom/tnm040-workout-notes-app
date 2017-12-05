@@ -73,5 +73,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
     fontWeight: 'bold',
+    //color: 'darkkhaki',
   },
 });

@@ -60,42 +60,44 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-				<View style={styles.Nav}>
+				<View style={styles.nav}>
       		<TouchableOpacity onPress={() => this.returnHome()} style={styles.logoStyle}>
       			 <Image source={require("./logo.png")}/>
       		</TouchableOpacity>
 				</View>
 				<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key} getWeekDifference={this.getWeekDifference} weekDifference={this.state.weekDifference}/>
-    		<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
-					<View>
-						<Text style={styles.dateStyle}>
-							{this.state.key}
-						</Text>
-						<TextInput style={styles.textInputStyle}
-							editable = {true}
-							placeholder = {"Log your workout here."}  //Placeholder
-							maxLength = {300} //Maximum number of characters
-							multiline = {true} //Multiple lines
-							numberOfLines = {100} //Only for Android, need to find solution for IOS
-							onChangeText = {this.setTextToSave} //{(text) => this.setState({text})}
-							value={this.state.text}
-							returnKeyType = {'none'}
-						/>
-					</View>
-					<View>
+      	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
+						<View>
+							<Text style={styles.dateStyle}>
+								{this.state.key}
+							</Text>
+							<TextInput style={styles.textInputStyle}
+								editable = {true}
+								placeholder = "Log your workout here..."  //Placeholder
+								maxLength = {300} //Maximum number of characters
+								multiline = {true} //Multiple lines
+								numberOfLines = {100} //Only for Android, need to find solution for IOS
+								onChangeText = {this.setTextToSave}
+								value={this.state.text}
+								returnKeyType = {'none'}
+							/>
+						</View>
 						<View style={styles.buttonStyle}>
 							<View style={styles.buttonSaveStyle}>
 								<TouchableOpacity onPress={Keyboard.dismiss}>
-								  <Text style={styles.buttonText}>Save</Text>
+									<View style={styles.clickBox}>
+								  	<Text style={styles.buttonText}>Save</Text>
+									</View>
 								</TouchableOpacity>
 							</View>
 							<View style={styles.buttonClearStyle}>
 								<TouchableOpacity onPress={this.clearNote}>
-									<Text style={styles.buttonText}>Clear</Text>
+									<View style={styles.clickBox}>
+										<Text style={styles.buttonText}>Clear</Text>
+									</View>
 								</TouchableOpacity>
 							</View>
 						</View>
-					</View>
       	</KeyboardAvoidingView>
       </View>
 		);
@@ -108,60 +110,98 @@ const styles = StyleSheet.create({
 		padding: 15,
 		fontSize: 20,
 		alignSelf: 'stretch',
-		marginTop: 10,
 	},
-	Nav: {
+	nav: {
 		height: '15%' ,
+		//backgroundColor: 'rgba(169, 229, 212, 0.5)', To be decieded.
+		//marginTop: 10,
 		flexDirection:'row',
 		alignItems:'center',
 		justifyContent:'center',
 	},
   container: {
-	    flex: 1,
-	    alignItems: 'stretch',
-	    justifyContent: 'flex-start',
-	    alignSelf: 'stretch',
-	    flexDirection: 'column',
+	  flex: 1,
+		alignItems: 'stretch',
+		justifyContent: 'flex-start',
+		alignSelf: 'stretch',
+		flexDirection: 'column',
   },
   noteStyle: {
-	  	flex: 1,
+		flex: 1,
 		marginTop: 10,
 		paddingTop: 10,
-	  	flexDirection: 'column',
-	  	justifyContent: 'space-between',
+	  flexDirection: 'column',
+	  justifyContent: 'space-between',
   },
 	buttonStyle: {
-		backgroundColor: 'white',
-		height: 'auto',
-		minHeight: '12%',
-		width: '100%',
+		height: '12%',
+		minHeight: '5%',
+		width: 'auto',
 		flexDirection: 'row',
+		marginLeft: 10,
+		marginRight: 10,
+		marginBottom: 15,
   },
   buttonClearStyle: {
+		//box style
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: 'rgba(250, 169, 22, 0.7)',
+		backgroundColor: '#e8e8e3',
+		marginLeft: 5,
+		marginRight: 10,
+		marginBottom: 10,
+		marginTop: 10,
+		//Shadow style
+		// borderWidth: 1,
+    // borderRadius: 2,
+    // borderColor: '#ddd',// To be changed to backgrounColor
+    // borderBottomWidth: 0,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
+    // elevation: 1,
   },
   buttonSaveStyle: {
+		//box style
 		flex: 1,
 		justifyContent: 'center',
 		backgroundColor: 'rgba(164, 194, 219, 1.0)',
-  },
-  buttonText: {
+		marginLeft: 10,
+		marginRight: 5,
+		marginBottom: 10,
+		marginTop: 10,
+		borderWidth: 1,
+		//Shadow style
+		// borderWidth: 1,
+		// borderRadius: 2,
+		// borderColor: '#ddd', // To be changed to backgrounColor
+		// borderBottomWidth: 0,
+		// shadowColor: '#000',
+		// shadowOffset: { width: 0, height: 2 },
+		// shadowOpacity: 0.8,
+		// shadowRadius: 2,
+		// elevation: 1,
+	},
+	clickBox: {
+		//Sets size of clickable area for save & clear!
+		justifyContent: 'center',
+		height: 100,
+		margin: 10,
+	},
+	buttonText: {
 		fontSize: 28,
 		textAlign:'center',
-
-  },
-  dateStyle: {
+	},
+	dateStyle: {
 		fontSize: 20,
 		color: 'rgba(0, 0, 0, 0.3)',
 		marginLeft: 15,
-
-  },
-  logoStyle: {
+ 	},
+	logoStyle: {
 		height: 100,
 		width: 100,
 		alignItems: 'stretch',
 		marginTop: 35,
-  },
+	},
 });
