@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import moment from 'moment';
 
 
@@ -11,39 +11,46 @@ export default class MonthAndYear extends Component{
     super(props);
   }
 
-  getDate(dayOfWeek){
+  getDate = (dayOfWeek) => {
     return (moment().startOf('isoweek').add(dayOfWeek+(7*this.props.currentWeek),'day'));
   }
 
-  setWeek(){
+/*
+  setWeek = () => {
     return ("Week " + this.getDate(startOfWeek).format('ww') + " ");
   }
+*/
 
-  setMonthAndYear(){
-    let returnString = "-";
-
+  setMonth = () => {
     if(parseInt(this.getDate(startOfWeek).format('D')) > parseInt(this.getDate(endOfWeek).format('D'))){
-      returnString = this.getDate(startOfWeek).format('MMM') + " ";
-      if(this.getDate(startOfWeek).format('MMM')=='Dec') returnString += this.getDate(startOfWeek).format('YYYY') + " ";
-      returnString += "- " + this.getDate(endOfWeek).format('MMM');
+      return this.getDate(startOfWeek).format('MMM') + " - " + this.getDate(endOfWeek).format('MMM');
+      //if(this.getDate(startOfWeek).format('MMM')=='Dec') returnString += this.getDate(startOfWeek).format('YYYY') + " ";
     }
-    else returnString = this.getDate(startOfWeek).format('MMM');
+    else return this.getDate(startOfWeek).format('MMMM');
+  }
 
-    returnString += " " + this.getDate(endOfWeek).format('YYYY')
+  setYear = () => {
+    let yearString = "";
+    if(parseInt(this.getDate(startOfWeek).format('D')) > parseInt(this.getDate(endOfWeek).format('D'))){
+      if(this.getDate(startOfWeek).format('MMM')=='Dec') yearString = this.getDate(startOfWeek).format('YYYY') + " - ";
+    }
+    yearString += this.getDate(endOfWeek).format('YYYY')
 
-    return returnString;
+    return yearString;
   }
 
   render(){
     return(
-      <View>
-          <Text style={styles.weekText}>
-            {this.setWeek()}
-          </Text>
-          <Text style={styles.monthAndYearText}>
-            {this.setMonthAndYear()}
-          </Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.textContainer}>
+        <Text style={styles.monthText}>
+          {this.setMonth()}
+        </Text>
+        <Text style={styles.yearText}>
+          {this.setYear()}
+        </Text>
       </View>
+      </TouchableWithoutFeedback>
 
     );
   }
@@ -51,29 +58,28 @@ export default class MonthAndYear extends Component{
 
 
 const styles = StyleSheet.create({
-  weekText: {
-    backgroundColor: 'olive',
-
+  textContainer: {
     justifyContent: 'center',
-    alignSelf: 'flex-start',
-    marginLeft: 40,
-    marginBottom: -15,
-
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'darkkhaki',
+    alignSelf: 'stretch',
+    backgroundColor:'rgba(0, 0, 0, 0.1)',
   },
-  monthAndYearText: {
-    backgroundColor: 'pink',
+  monthText: {
     justifyContent: 'center',
-    alignSelf: 'flex-end',
-    //alignSelf: 'center',
-
-    marginRight: 40,
+    alignSelf: 'center',
+    color: 'black',
+    marginBottom: 5,
+    fontSize: 25,
+    backgroundColor:'transparent',
+    fontFamily: 'Avenir',
+  },
+  yearText: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    color: 'black',
     marginBottom: 15,
-
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'darkkhaki',
+    //fontWeight: 'bold',
+    //color: 'darkkhaki',
+    fontFamily: 'Avenir',
   },
 });
