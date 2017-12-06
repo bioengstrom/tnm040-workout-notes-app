@@ -78,8 +78,6 @@ const styles = StyleSheet.create({
     color: 'black',
     marginBottom: 15,
     fontSize: 16,
-    //fontWeight: 'bold',
-    //color: 'darkkhaki',
     fontFamily: 'Avenir',
   },
 });

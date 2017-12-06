@@ -93,7 +93,7 @@ export default class App extends React.Component {
 							</View>
 							<View style={styles.buttonClearStyle}>
 								<TouchableOpacity onPress={this.clearNote}>
-									<Text style={styles.buttonText}>Clear</Text>
+										<Text style={styles.buttonText}>Clear</Text>
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignSelf: 'stretch',
 		flexDirection: 'column',
-
   },
   noteStyle: {
 		flex: 1,

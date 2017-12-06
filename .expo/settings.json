@@ -5,5 +5,9 @@
   "strict": false,
   "minify": false,
   "urlType": "exp",
+<<<<<<< HEAD
   "urlRandomness": "sd-zq6"
+=======
+  "urlRandomness": "iw-3tf"
+>>>>>>> 4046501534a55ebf6ca264385a2757f236d6ed7a
 }
