@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, AsyncStorage} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, AsyncStorage, Alert} from 'react-native';
 import moment from 'moment';
 
 export default class DayButton extends Component{
   constructor(props){
     super(props);
+    this.state={pressed: this.setDates('uniqueFormat')};
+    //this.getPlannedWorkoutTest = this.getPlannedWorkoutTest.bind(this);
+    //this.getPlannedWorkout();
   }
 
   //Sets the current week's dates inside the day buttons.
@@ -12,21 +15,49 @@ export default class DayButton extends Component{
     let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
 
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
-      let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
+      let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');
 
       if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()) {
         if(returnFormat=='uniqueFormat') return (currentLoopDay.format('L')); //Return a (locally) unique format, that hasn't occurred, or ever will occur again.
         if(!returnFormat) return (currentLoopDay.format('D')); //Return the day number if the weekDay matches the date.
       }
     }
-
     return ('-'); //if the loop isn't working, return "-".
   }
 
+  // createKeyArray(){
+  //   let currentWeekDayButton=this.props.text.toString().toLowerCase(); //Creates a comparison string for the current button.
+  //   let keyArray = new Array(7);
+  //   for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
+  //     let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');//moment().format('s ss')
+  //     keyArray[i]=currentLoopDay.format('L');
+  //   }
+  //   return keyArray;
+  // }
+  //
+  // async getPlannedWorkout(){
+  //   let currentWeekDayButton=this.props.text.toString().toLowerCase();
+  //
+  //   let valueArray = await AsyncStorage.multiGet(this.createKeyArray());
+  //
+  //   for(let i=0; i < 7; ++i){
+  //     let currentLoopDay=moment().startOf('isoweek').add(i+(7*this.props.currentWeek),'day');
+  //     console.log(valueArray[i][1]);
+  //     if(currentWeekDayButton==currentLoopDay.format('dddd').substring(0,3).toLowerCase()){
+  //       if(valueArray[i][1] != null && valueArray[i][1] != ""){
+  //         this.setState({planned: true});
+  //       }
+  //       else{
+  //         this.setState({planed: false});
+  //       }
+  //     }
+  //
+  //   }
+  // }
   //Sets a different style for today's button.
   highlightToday = (status) => {
+    //this.getPlannedWorkout();
     let todaysDate=this.setDates('uniqueFormat');
-
     if(todaysDate==moment().format('L')){
       if(status=='pressed') return{color: 'rgba(0, 0, 0, 1.0)',};
       if(status=='notPressed') return{color: 'rgba(255, 154, 111, 1.0)',};
@@ -38,29 +69,35 @@ export default class DayButton extends Component{
     return false;
   }
 
-
-  async workoutPlanned() {
-    await AsyncStorage.getItem(this.setDates('uniqueFormat')).then(
+  async getPlannedWorkoutTest(inKey){
+    let value = await AsyncStorage.getItem(inKey);
+    if(value != null) this.setState({planned: true});
+    else this.setState({planned: false});
+    /*
+    AsyncStorage.getItem(inKey).then(
       (value) => {
-        if(value != '' && value != null){
-          console.log(value + ' ' + this.setDates('uniqueFormat') + ' true');
-          return true;
+        if(value != null && value != ''){
+          this.setState({planned: true});
         }
-        else {
-          console.log(value + ' ' + this.setDates('uniqueFormat') + ' false');
-          return false;
+        else{
+          this.setState({planned: false});
         }
-			}
-    ).done();
+      }
+    )
+    */
   }
 
+  getPressedDate = () => {
+    this.props.getPressedDate(this.setDates('uniqueFormat'));
+    //this.getPlannedWorkoutTest();
+  }
   render(){
-    const getPressedDate = () => {
-      this.props.getPressedDate(this.setDates('uniqueFormat'));
-    }
-
+    // const getPressedDate = () => {
+    //   this.props.getPressedDate(this.setDates('uniqueFormat'));
+    //   //this.getPlannedWorkoutTest();
+    // }
     return(
-      <TouchableOpacity onPress={getPressedDate} style={this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton}>
+      <TouchableOpacity onPress={this.getPressedDate} style={[this.buttonPressed()?[styles.weekDayButton, styles.weekDayButtonOnPress]:styles.weekDayButton,]}>
         <Text style={[styles.buttonText, this.buttonPressed()?[styles.buttonTextOnPress,this.highlightToday('pressed')]:[this.highlightToday('notPressed')]]}>
           <Text>
             {this.props.text}{"\n"}
@@ -69,7 +106,7 @@ export default class DayButton extends Component{
             {this.setDates()}
           </Text>
         </Text>
-        <View style={[ this.workoutPlanned()?[styles.planningIndicator, styles.notPlanned]:[styles.planningIndicator, styles.planned]]}>
+        <View style={[styles.planningIndicator, this.props.planned?[styles.planned]:[styles.notPlanned]]}>
         </View>
       </TouchableOpacity>
     );
@@ -88,6 +125,7 @@ const styles = StyleSheet.create({
     //backgroundColor: 'olive',
   },
   notPlanned: {
+    //backgroundColor: 'transparent',
     backgroundColor: 'red',
   },
   planned: {

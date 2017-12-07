@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, Image, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Button, Image, TextInput, Keyboard, Alert, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
@@ -17,6 +17,7 @@ export default class App extends React.Component {
 		this.handleDate = this.handleDate.bind(this);
 		this.getPressedDate = this.getPressedDate.bind(this);
 		this.getWeekDifference = this.getWeekDifference.bind(this);
+		this.getClearAlert = this.getClearAlert.bind(this);
 		this.handleDate(moment().format('L'));
 	}
 
@@ -26,21 +27,19 @@ export default class App extends React.Component {
 	}
 
 //Clear current note. AA, JP
-	clearNote() {
-		AsyncStorage.setItem(this.state.key, ''); //Save the text
-			this.setState({text: ''});
-		console.log('Text cleared'); //Debugging
+	clearNote = () => {
+		AsyncStorage.removeItem(this.state.key); //removes value stored in key
+		this.setState({text: null});
 	}
 
 	handleDate(inKey) {
 		AsyncStorage.getItem(inKey).then(
 			(value) => {
 				console.log("id " + inKey + " value " + value);
-				this.setState({text: value})
+				this.setState({text: value});
 			}
 		);
 	}
-
 
 //Function to save text. AA,JP
 	setTextToSave = (value) => {AsyncStorage.setItem(this.state.key, value); //Saves the text
@@ -53,8 +52,16 @@ export default class App extends React.Component {
 	}
 
 	getWeekDifference(inValue){
-		console.log(inValue);
+		//console.log(inValue);
 		this.setState({weekDifference: inValue});
+	}
+
+	getClearAlert(){
+		Alert.alert(
+			'Remove workout?','',
+			[{text: 'Yes', onPress: this.clearNote}, {text: 'No', style: 'cancel'}],
+			{cancelable: false}
+		);
 	}
 
   render() {
@@ -91,7 +98,7 @@ export default class App extends React.Component {
 								</TouchableOpacity>
 							</View>
 							<View style={styles.buttonClearStyle}>
-								<TouchableOpacity onPress={this.clearNote}>
+								<TouchableOpacity onPress={this.getClearAlert}>
 									<View style={styles.clickBox}>
 										<Text style={styles.buttonText}>Clear</Text>
 									</View>

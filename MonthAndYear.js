@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
-
 const startOfWeek=0;
 const endOfWeek=6;
 
@@ -15,16 +14,9 @@ export default class MonthAndYear extends Component{
     return (moment().startOf('isoweek').add(dayOfWeek+(7*this.props.currentWeek),'day'));
   }
 
-/*
-  setWeek = () => {
-    return ("Week " + this.getDate(startOfWeek).format('ww') + " ");
-  }
-*/
-
   setMonth = () => {
     if(parseInt(this.getDate(startOfWeek).format('D')) > parseInt(this.getDate(endOfWeek).format('D'))){
       return this.getDate(startOfWeek).format('MMM') + " - " + this.getDate(endOfWeek).format('MMM');
-      //if(this.getDate(startOfWeek).format('MMM')=='Dec') returnString += this.getDate(startOfWeek).format('YYYY') + " ";
     }
     else return this.getDate(startOfWeek).format('MMMM');
   }
