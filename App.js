@@ -1,62 +1,66 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, Image, TextInput, Keyboard, Alert, KeyboardAvoidingView, AsyncStorage, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Alert, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableWithoutFeedback, Text, Image} from 'react-native';
 import moment from 'moment';
 import Calendar from './Calendar.js';
 
 Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
-console.log("Initiation successful!")
 
 export default class App extends React.Component {
-
 	constructor(props) {
 		super(props);
 
-		this.state = {text: null, key: moment().format('L'), weekDifference: 0}; // Default key is set to null, change to current date. AA,JP
+		this.state = {
+			text: null, key: moment().format('L'), weekDifference: 0, plannedArray: new Array(7)};
 
 		this.clearNote = this.clearNote.bind(this);
 		this.handleDate = this.handleDate.bind(this);
+		this.getPlanned = this.getPlanned.bind(this);
 		this.getPressedDate = this.getPressedDate.bind(this);
 		this.getWeekDifference = this.getWeekDifference.bind(this);
-		this.getClearAlert = this.getClearAlert.bind(this);
+
 		this.handleDate(moment().format('L'));
+    this.getPlanned(0);
 	}
 
-	getPressedDate(inDate) {
+	getPressedDate = (inDate) => {
 		this.setState({key: inDate});
 		this.handleDate(inDate);
 	}
 
-//Clear current note. AA, JP
-	clearNote = () => {
-		AsyncStorage.removeItem(this.state.key); //removes value stored in key
-		this.setState({text: null});
+	getWeekDifference = (inValue) => {
+		this.getPlanned(inValue);
+		this.setState({weekDifference: inValue});
 	}
 
-	handleDate(inKey) {
+	handleDate = (inKey) => {
 		AsyncStorage.getItem(inKey).then(
 			(value) => {
-				console.log("id " + inKey + " value " + value);
 				this.setState({text: value});
 			}
 		);
 	}
 
-//Function to save text. AA,JP
-	setTextToSave = (value) => {AsyncStorage.setItem(this.state.key, value); //Saves the text
-		this.setState({text: value});
-	}
-
 	returnHome = () => {
 		this.getPressedDate(moment().format('L'));
+		this.getPlanned(0);
 		this.setState({weekDifference: 0});
 	}
 
-	getWeekDifference(inValue){
-		//console.log(inValue);
-		this.setState({weekDifference: inValue});
+	//Function to save text. AA,JP
+	setTextToSave = (value) => {
+		AsyncStorage.setItem(this.state.key, value); //Saves the text
+		this.getPlanned(this.state.weekDifference);
+		this.setState({text: value});
 	}
 
-	getClearAlert(){
+	//Clear current note. AA, JP
+	clearNote = () => {
+		AsyncStorage.removeItem(this.state.key); //removes value stored in key
+		this.getPlanned(this.state.weekDifference);
+		this.setState({text: null});
+	}
+
+	getClearAlert = () => {
 		Alert.alert(
 			'Remove workout?','',
 			[{text: 'Yes', onPress: this.clearNote}, {text: 'No', style: 'cancel'}],
@@ -64,47 +68,71 @@ export default class App extends React.Component {
 		);
 	}
 
+	createKeyArray = (inValue) => {
+    let keyArray = new Array(7);
+    for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
+      let currentLoopDay=moment().startOf('isoweek').add(i+(7*inValue),'day');
+      keyArray[i]=currentLoopDay.format('L');
+    }
+    return keyArray;
+  }
+
+  getPlanned = async (inValue) => {
+    try{
+			let array = this.createKeyArray(inValue);
+      let values = await AsyncStorage.multiGet(array);
+
+      for(let i=0; i < 7; ++i){
+        if((values[i])[1] != null && (values[i])[1] != '') array[i]=1;
+        else array[i]=0;
+      }
+
+      this.setState({plannedArray: array});
+    }
+		catch (error){
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
-				<View style={styles.nav}>
-      		<TouchableOpacity onPress={() => this.returnHome()} style={styles.logoStyle}>
-      			 <Image source={require("./logo.png")}/>
-      		</TouchableOpacity>
-				</View>
-				<Calendar getPressedDate={this.getPressedDate} pressedDate={this.state.key} getWeekDifference={this.getWeekDifference} weekDifference={this.state.weekDifference}/>
+				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+					<View style={styles.nav}>
+    				<TouchableOpacity onPress={() => this.returnHome()} style={styles.logoStyle}>
+    			 		<Image source={require("./images/logo.png")}/>
+    				</TouchableOpacity>
+					</View>
+				</TouchableWithoutFeedback>
+				<Calendar plannedArray={this.state.plannedArray} getPressedDate={this.getPressedDate} pressedDate={this.state.key} getWeekDifference={this.getWeekDifference} weekDifference={this.state.weekDifference}/>
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
-						<View>
-							<Text style={styles.dateStyle}>
-								{this.state.key}
-							</Text>
-							<TextInput style={styles.textInputStyle}
-								editable = {true}
-								placeholder = "Log your workout here..."  //Placeholder
-								maxLength = {300} //Maximum number of characters
-								multiline = {true} //Multiple lines
-								numberOfLines = {100} //Only for Android, need to find solution for IOS
-								onChangeText = {this.setTextToSave}
-								value={this.state.text}
-								returnKeyType = {'none'}
-							/>
+					<View>
+						<Text style={styles.dateStyle}>
+							{this.state.key}
+						</Text>
+						<TextInput style={styles.textInputStyle}
+							editable = {true}
+							placeholder = "Log your workout here..."  //Placeholder
+							maxLength = {300} //Maximum number of characters
+							multiline = {true} //Multiple lines
+							numberOfLines = {100} //Only for Android, need to find solution for IOS
+							onChangeText = {this.setTextToSave}
+							value={this.state.text}
+							returnKeyType = {'none'}
+							placeholderColor = {'rgba(0, 0, 0, 0.1)'}
+						/>
+					</View>
+					<View style={styles.buttonStyle}>
+						<View style={styles.buttonSaveStyle}>
+							<TouchableOpacity onPress={Keyboard.dismiss}>
+							  <Text style={styles.buttonText}>Save</Text>
+							</TouchableOpacity>
 						</View>
-						<View style={styles.buttonStyle}>
-							<View style={styles.buttonSaveStyle}>
-								<TouchableOpacity onPress={Keyboard.dismiss}>
-									<View style={styles.clickBox}>
-								  	<Text style={styles.buttonText}>Save</Text>
-									</View>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.buttonClearStyle}>
-								<TouchableOpacity onPress={this.getClearAlert}>
-									<View style={styles.clickBox}>
-										<Text style={styles.buttonText}>Clear</Text>
-									</View>
-								</TouchableOpacity>
-							</View>
+						<View style={styles.buttonClearStyle}>
+							<TouchableOpacity onPress={this.getClearAlert}>
+								<Text style={styles.buttonText}>Clear</Text>
+							</TouchableOpacity>
 						</View>
+					</View>
       	</KeyboardAvoidingView>
       </View>
 		);
@@ -113,21 +141,23 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
 	textInputStyle: {
-		backgroundColor: 'transparent',
+		backgroundColor: 'white',
 		padding: 15,
 		fontSize: 20,
 		alignSelf: 'stretch',
+		height: '60%',
+		fontFamily: 'Avenir',
+		backgroundColor: 'transparent',
 	},
 	nav: {
-		height: '15%' ,
-		//backgroundColor: 'rgba(169, 229, 212, 0.5)', To be decieded.
-		//marginTop: 10,
+		height: '15%',
 		flexDirection:'row',
 		alignItems:'center',
 		justifyContent:'center',
+		backgroundColor:'rgba(0, 0, 0, 0.1)',
 	},
   container: {
-	  flex: 1,
+	  	flex: 1,
 		alignItems: 'stretch',
 		justifyContent: 'flex-start',
 		alignSelf: 'stretch',
@@ -135,75 +165,61 @@ const styles = StyleSheet.create({
   },
   noteStyle: {
 		flex: 1,
-		marginTop: 10,
-		paddingTop: 10,
-	  flexDirection: 'column',
-	  justifyContent: 'space-between',
+		paddingTop: 20,
+	  	flexDirection: 'column',
+	  	justifyContent: 'space-between',
   },
 	buttonStyle: {
-		height: '12%',
-		minHeight: '5%',
 		width: 'auto',
 		flexDirection: 'row',
-		marginLeft: 10,
-		marginRight: 10,
-		marginBottom: 15,
+		justifyContent: 'center',
+		marginBottom: '5%', //Distance: buttons to Keyboard
   },
   buttonClearStyle: {
 		//box style
-		flex: 1,
+		width: '40%',
 		justifyContent: 'center',
-		backgroundColor: '#e8e8e3',
-		marginLeft: 5,
-		marginRight: 10,
-		marginBottom: 10,
-		marginTop: 10,
+		backgroundColor: '#dc5f5f',
+		marginLeft: '2.5%',
 		//Shadow style
-		// borderWidth: 1,
-    // borderRadius: 2,
-    // borderColor: '#ddd',// To be changed to backgrounColor
-    // borderBottomWidth: 0,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-    // elevation: 1,
+		borderWidth: 1,
+	    borderRadius: 2,
+	    borderColor: '#e8e8e3', // To be changed to backgrounColor
+	    borderBottomWidth: 0,
+	    shadowColor: 'grey',
+	    shadowOffset: { width: 0, height: 1 },
+	    shadowOpacity: 0.8,
+	    shadowRadius: 1,
+	    elevation: 1,
   },
   buttonSaveStyle: {
 		//box style
-		flex: 1,
+		width: '40%',
 		justifyContent: 'center',
-		backgroundColor: 'rgba(164, 194, 219, 1.0)',
-		marginLeft: 10,
-		marginRight: 5,
-		marginBottom: 10,
-		marginTop: 10,
-		borderWidth: 1,
+		backgroundColor: '#68B24E',
+		marginRight: '2.5%',
 		//Shadow style
-		// borderWidth: 1,
-		// borderRadius: 2,
-		// borderColor: '#ddd', // To be changed to backgrounColor
-		// borderBottomWidth: 0,
-		// shadowColor: '#000',
-		// shadowOffset: { width: 0, height: 2 },
-		// shadowOpacity: 0.8,
-		// shadowRadius: 2,
-		// elevation: 1,
-	},
-	clickBox: {
-		//Sets size of clickable area for save & clear!
-		justifyContent: 'center',
-		height: 100,
-		margin: 10,
+		borderWidth: 1,
+		borderRadius: 2,
+		borderColor: 'rgba(164, 194, 219, 1.0)', // To be changed to backgrounColor
+		borderBottomWidth: 0,
+		shadowColor: 'grey',
+		shadowOffset: {width: 0, height: 1},
+		shadowOpacity: 0.8,
+		shadowRadius: 1,
+		elevation: 1,
 	},
 	buttonText: {
-		fontSize: 28,
+		fontSize: 25,
 		textAlign:'center',
+		fontFamily: 'Avenir',
+		color: 'black',
 	},
 	dateStyle: {
 		fontSize: 20,
-		color: 'rgba(0, 0, 0, 0.3)',
+		color: 'grey',
 		marginLeft: 15,
+		fontFamily: 'Avenir',
  	},
 	logoStyle: {
 		height: 100,
