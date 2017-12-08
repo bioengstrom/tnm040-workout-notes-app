@@ -3,9 +3,11 @@ import {StyleSheet, View, TouchableOpacity, Alert, Text, Image} from 'react-nati
 import MonthAndYear from './MonthAndYear.js';
 import DayButton from './DayButton.js';
 
-const lowLimit = -3;
-const highLimit = 3;
+//Values that sets the number of weeks the user can scroll from the week rendered on startup.
+const lowLimit = -520;
+const highLimit = 520;
 
+//Array that are looped through when creating the weekday buttons.
 const weekDayButtons = [
   {text: 'MON'},
   {text: 'TUE'},
@@ -16,55 +18,59 @@ const weekDayButtons = [
   {text: 'SUN'},
 ];
 
+//exports a render of containing the month(s), year(s) and week calendar and scroll buttons.
 export default class Calendar extends Component{
   constructor(props){
     super(props);
   }
 
-  updateWeekDifference = (argument) => {
-    if(argument=='prev' && this.props.weekDifference > lowLimit) this.props.getWeekDifference(--this.props.weekDifference);
-    else if(argument=='prev' && this.props.weekDifference <= lowLimit) this.getScrollAlert('lowLimit');
-
-    if(argument=='next' && this.props.weekDifference < highLimit) this.props.getWeekDifference(++this.props.weekDifference);
-    else if(argument=='next' && this.props.weekDifference >= highLimit) this.getScrollAlert('highLimit');
+  //Checks wether if the user is one scroll away from the scroll limits.
+  scrollLimitReached = (scrollDirection) => {
+    if(scrollDirection=='low' && this.props.relativeWeek <= lowLimit+1) return true;
+    if(scrollDirection=='high' && this.props.relativeWeek >= highLimit-1) return true;
+    return false;
   }
 
+  //crement the week dependant on which way the user wants to scroll. If the limit is reached, call an alert.
+  relativeWeekUpdate = (scrollDirection) => {
+    if(scrollDirection=='prev' && this.props.relativeWeek > lowLimit) this.props.getRelativeWeek(--this.props.relativeWeek);
+    else if(scrollDirection=='prev' && this.props.relativeWeek <= lowLimit) this.getScrollAlert(scrollDirection);
+
+    if(scrollDirection=='next' && this.props.relativeWeek < highLimit) this.props.getRelativeWeek(++this.props.relativeWeek);
+    else if(scrollDirection=='next' && this.props.relativeWeek >= highLimit) this.getScrollAlert(scrollDirection);
+  }
+
+  //Display an alert depending on which scroll limit is reached.
   getScrollAlert = (limit) => {
     let limitText = '';
-    if(limit=='highLimit') limitText = 'Higher scroll limit reached';
-    if(limit=='lowLimit') limitText = 'Lower scroll limit reached';
+    if(limit=='prev') limitText = 'Lower scroll limit reached';
+    if(limit=='next') limitText = 'Higher scroll limit reached';
 
+    //The user can either stay on the last week and scroll back, or press yes and return to the startup week.
     Alert.alert(
       limitText,
       "Want to go back to the current week?",
-      [{text: 'Yes', onPress: () => this.props.getWeekDifference(0)}, {text: 'Dismiss', style: 'cancel'}],
+      [{text: 'Yes', onPress: () => this.props.getRelativeWeek(0)}, {text: 'Dismiss', style: 'cancel'}],
       {cancelable: false}
     );
-  }
-
-  scrollLimitReached = (argument) => {
-    if(argument=='low' && this.props.weekDifference <= lowLimit+1) return true;
-    if(argument=='high' && this.props.weekDifference >= highLimit-1) return true;
-
-    return false;
   }
 
   render() {
     const renderedButtons = weekDayButtons.map((day, index) => {
       return(
-        <DayButton dotArray={this.props.plannedArray} key={day.text} text={day.text} dayIndex={index} getPressedDate={this.props.getPressedDate} pressedDate={this.props.pressedDate} currentWeek={this.props.weekDifference}/>
+        <DayButton plannedWorkoutArray={this.props.plannedWorkoutArray} getPressedDateTextField={this.props.getPressedDateTextField} key={day.text} text={day.text} dayIndex={index} getPressedDate={this.props.getPressedDate} pressedDate={this.props.pressedDate} relativeWeek={this.props.relativeWeek}/>
       );
     });
 
     return(
       <View>
-        <MonthAndYear currentWeek={this.props.weekDifference}/>
+        <MonthAndYear currentWeek={this.props.relativeWeek}/>
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.updateWeekDifference('prev')} style={[styles.iconContainer, styles.iconContainerLeft, this.scrollLimitReached('low')?{opacity: 0.25}:{opacity: 1},]}>
+          <TouchableOpacity onPress={() => this.relativeWeekUpdate('prev')} style={[styles.iconContainer, styles.iconContainerLeft, this.scrollLimitReached('low')?{opacity: 0.25}:{opacity: 1},]}>
             <Image style={styles.icon} source={require("./images/chevronLeft.png")}/>
           </TouchableOpacity>
           {renderedButtons}
-          <TouchableOpacity onPress={() => this.updateWeekDifference('next')} style={[styles.iconContainer, styles.iconContainerRight, this.scrollLimitReached('high')?{opacity: 0.25}:{opacity: 1},]}>
+          <TouchableOpacity onPress={() => this.relativeWeekUpdate('next')} style={[styles.iconContainer, styles.iconContainerRight, this.scrollLimitReached('high')?{opacity: 0.25}:{opacity: 1},]}>
             <Image style={styles.icon} source={require("./images/chevronRight.png")}/>
           </TouchableOpacity>
         </View>
@@ -75,9 +81,7 @@ export default class Calendar extends Component{
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',//'#4682B4',
-    //alignItems: 'stretch',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
     alignSelf: 'stretch',
     flexDirection: 'row',
@@ -90,8 +94,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 50,
     height: 50,
-    //borderBottomWidth: 0.75,
-    backgroundColor: 'transparent', //
+    backgroundColor: 'transparent',
   },
 	iconContainerLeft: {
     paddingLeft: 20,
@@ -104,11 +107,4 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
 	},
-  noFade: {
-    opacity: 1,
-  },
-  fade: {
-    opacity: 0.25,
-  },
-
 });

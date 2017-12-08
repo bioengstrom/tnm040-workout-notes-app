@@ -1,34 +1,40 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
-import moment from 'moment';
+import moment from 'moment'; //Version 2.19.3
 
+//exports a render of one of the buttons in the week calendar.
 export default class DayButton extends Component{
   constructor(props){
     super(props);
   }
 
+  //returns the date of the current button being rendered.
   getCurrentLoopDay = () => {
-    return moment().startOf('isoweek').add(this.props.dayIndex+(7*this.props.currentWeek),'day');
+    return moment().startOf('isoweek').add(this.props.dayIndex+(7*this.props.relativeWeek),'day');
   }
 
+  //Checks wether the button being rendered is today's date.
   highlightToday = () => {
     if(this.getCurrentLoopDay().format('L')==moment().format('L')) return true;
     return false;
   }
 
+  //Checks wether the button being rendered was pressed during the previous render loop.
   buttonPressed = () => {
     if(this.getCurrentLoopDay().format('L')==this.props.pressedDate) return styles.weekDayButtonOnPress;
     return null;
   }
 
+  //Pass the pressed button's date to App.js, through Calendar.js, two different formats.
   getPressedDate = () => {
     this.props.getPressedDate(this.getCurrentLoopDay().format('L'));
+    this.props.getPressedDateTextField(this.getCurrentLoopDay().format("MMM Do YYYY"));
   }
 
   render(){
     return(
       <TouchableOpacity onPress={this.getPressedDate} style={[styles.weekDayButton, this.buttonPressed()]}>
-        <Text style={[styles.buttonText, styles.buttonTextOnPress, this.highlightToday()?{color: '#dc5f5f'}:{color: 'black'}]}>
+        <Text style={[styles.buttonText, this.highlightToday()?{color: '#dc5f5f'}:{color: 'black'}]}>
           <Text>
             {this.props.text}{"\n"}
           </Text>
@@ -36,35 +42,33 @@ export default class DayButton extends Component{
             {this.getCurrentLoopDay().format('D')}
           </Text>
         </Text>
-        <View style={[styles.planningIndicator, (this.props.dotArray[this.props.dayIndex])?styles.planned:styles.notPlanned]}>
+        <View style={[styles.planningIndicator, this.props.plannedWorkoutArray[this.props.dayIndex]?[styles.planned]:[styles.notPlanned]]}>
         </View>
       </TouchableOpacity>
     );
   }
 }
 
-const roundShapeScale=45;
 const styles = StyleSheet.create({
-  emptyStyle: {
-  },
   planningIndicator: {
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 3,
-    width: 4,
-    height: 4,
-    borderRadius: 4/2,
+    marginTop: 1,
+    width: 6,
+    height: 6,
+    borderRadius: 6/2,
   },
   notPlanned: {
     backgroundColor: 'transparent',
-    //backgroundColor: 'black',
   },
   planned: {
     backgroundColor: '#68B24E',
+    borderWidth: 0.5,
+    borderColor: 'black',
   },
   weekDayButton: {
-    width: roundShapeScale,
-    height: roundShapeScale+7.5,
+    width: 45,
+    height: 52.5,
     borderColor: 'rgba(0, 0, 0, 1.0)',
     backgroundColor: 'transparent',
     marginBottom: -1,
@@ -85,9 +89,6 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 1.0)',
     backgroundColor: 'transparent',
     fontFamily: 'Avenir',
-  },
-  buttonTextOnPress: {
-    //color: 'rgba(0, 0, 0, 1.0)',
   },
   dateAlign:{
     alignSelf: 'center',

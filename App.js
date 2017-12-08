@@ -1,37 +1,52 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, TouchableOpacity, Alert, TextInput, Keyboard, KeyboardAvoidingView, AsyncStorage, TouchableWithoutFeedback, Text, Image} from 'react-native';
-import moment from 'moment';
+import moment from 'moment'; //Version 2.19.3
 import Calendar from './Calendar.js';
 
-Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
+Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP); //Locks the app in portrait mode.
 
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 
+		//States that are used in this class, and passed as props to the child-classes.
 		this.state = {
-			text: null, key: moment().format('L'), weekDifference: 0, plannedArray: new Array(7)};
+			text: null,
+			key: moment().format('L'),
+			textFieldDate: moment().format("MMM Do YYYY"),
+			relativeWeek: 0,
+			plannedWorkoutArray: new Array(7),
+		};
 
+		//Binds the functions here in the constructor for slight preformance enhancements.
 		this.clearNote = this.clearNote.bind(this);
 		this.handleDate = this.handleDate.bind(this);
-		this.getPlanned = this.getPlanned.bind(this);
+		this.setPlannedWorkout = this.setPlannedWorkout.bind(this);
 		this.getPressedDate = this.getPressedDate.bind(this);
-		this.getWeekDifference = this.getWeekDifference.bind(this);
+		this.getRelativeWeek = this.getRelativeWeek.bind(this);
 
 		this.handleDate(moment().format('L'));
-    this.getPlanned(0);
+    this.setPlannedWorkout(0);
 	}
 
+	//Gets which date is pressed, passed to DayButton.js through Calendar.js.
 	getPressedDate = (inDate) => {
 		this.setState({key: inDate});
 		this.handleDate(inDate);
 	}
 
-	getWeekDifference = (inValue) => {
-		this.getPlanned(inValue);
-		this.setState({weekDifference: inValue});
+	//Same as getPressedDate, although the inDate is a different format.
+	getPressedDateTextField = (inDate) => {
+		this.setState({textFieldDate: inDate});
 	}
 
+	//Gets the relative week (according to the startup week).
+	getRelativeWeek = (relation) => {
+		this.setPlannedWorkout(relation);
+		this.setState({relativeWeek: relation});
+	}
+
+	//Get the value stored in AsyncStorage at the inKey key.
 	handleDate = (inKey) => {
 		AsyncStorage.getItem(inKey).then(
 			(value) => {
@@ -40,26 +55,30 @@ export default class App extends React.Component {
 		);
 	}
 
+	//Resets the user to the startup point.
 	returnHome = () => {
 		this.getPressedDate(moment().format('L'));
-		this.getPlanned(0);
-		this.setState({weekDifference: 0});
+		this.setPlannedWorkout(0);
+		this.setState({relativeWeek: 0});
 	}
 
-	//Function to save text. AA,JP
-	setTextToSave = (value) => {
-		AsyncStorage.setItem(this.state.key, value); //Saves the text
-		this.getPlanned(this.state.weekDifference);
+	//Save the value to AsyncStorage at the current key.
+	saveNote = (value) => {
+		AsyncStorage.setItem(this.state.key, value);
 		this.setState({text: value});
+
+		this.setPlannedWorkout(this.state.relativeWeek);
 	}
 
-	//Clear current note. AA, JP
+	//Clear the value from AsyncStorage at the current key.
 	clearNote = () => {
-		AsyncStorage.removeItem(this.state.key); //removes value stored in key
-		this.getPlanned(this.state.weekDifference);
+		AsyncStorage.removeItem(this.state.key);
 		this.setState({text: null});
+
+		this.setPlannedWorkout(this.state.relativeWeek);
 	}
 
+	//An alert given to the user before they clear a value from AsyncStorage.
 	getClearAlert = () => {
 		Alert.alert(
 			'Remove workout?','',
@@ -68,6 +87,7 @@ export default class App extends React.Component {
 		);
 	}
 
+	//Creates an array of all the keys of the relative week.
 	createKeyArray = (inValue) => {
     let keyArray = new Array(7);
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
@@ -77,20 +97,20 @@ export default class App extends React.Component {
     return keyArray;
   }
 
-  getPlanned = async (inValue) => {
-    try{
-			let array = this.createKeyArray(inValue);
-      let values = await AsyncStorage.multiGet(array);
+	//Check wether the relative week's days have any text stored. Creates an array with the value 1 if it has text, 0 if it hasn't.
+	//Then sets the state to this array, which eventually (by passing to Calendar.js -> DayButton.js) decides wether the green dot should be displayed.
+	setPlannedWorkout = async (inValue) => {
+		//array is used twice for different purposes, instead of declaring new array(7).
+		let array = this.createKeyArray(inValue); //The first use of array is to store the 7 keys.
+    let values = await AsyncStorage.multiGet(array); //Gets all the values with one call to AsyncStorage.
 
-      for(let i=0; i < 7; ++i){
-        if((values[i])[1] != null && (values[i])[1] != '') array[i]=1;
-        else array[i]=0;
-      }
+    for(let i=0; i < 7; ++i){
+			//The second use of array is to store 1 or 0.
+      if((values[i])[1] != null && (values[i])[1] != '') array[i]=1;
+      else array[i]=0;
+    }
 
-      this.setState({plannedArray: array});
-    }
-		catch (error){
-    }
+    this.setState({plannedWorkoutArray: array}); //State is set to array, which now has 1 or 0 as values.
   }
 
   render() {
@@ -103,23 +123,13 @@ export default class App extends React.Component {
     				</TouchableOpacity>
 					</View>
 				</TouchableWithoutFeedback>
-				<Calendar plannedArray={this.state.plannedArray} getPressedDate={this.getPressedDate} pressedDate={this.state.key} getWeekDifference={this.getWeekDifference} weekDifference={this.state.weekDifference}/>
+				<Calendar plannedWorkoutArray={this.state.plannedWorkoutArray} getPressedDateTextField={this.getPressedDateTextField} getPressedDate={this.getPressedDate} pressedDate={this.state.key} getRelativeWeek={this.getRelativeWeek} relativeWeek={this.state.relativeWeek}/>
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
 					<View>
 						<Text style={styles.dateStyle}>
-							{this.state.key}
+							{this.state.textFieldDate}:
 						</Text>
-						<TextInput style={styles.textInputStyle}
-							editable = {true}
-							placeholder = "Log your workout here..."  //Placeholder
-							maxLength = {300} //Maximum number of characters
-							multiline = {true} //Multiple lines
-							numberOfLines = {100} //Only for Android, need to find solution for IOS
-							onChangeText = {this.setTextToSave}
-							value={this.state.text}
-							returnKeyType = {'none'}
-							placeholderColor = {'rgba(0, 0, 0, 0.1)'}
-						/>
+						<TextInput style={styles.textInputStyle} editable={true} placeholder={"Log your workout here..."} maxLength={300} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
 					</View>
 					<View style={styles.buttonStyle}>
 						<View style={styles.buttonSaveStyle}>
