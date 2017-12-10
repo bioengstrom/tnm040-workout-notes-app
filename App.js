@@ -117,11 +117,11 @@ export default class App extends React.Component {
 				</TouchableWithoutFeedback>
 				<Calendar plannedWorkoutArray={this.state.plannedWorkoutArray} getPressedDateTextField={this.getPressedDateTextField} getPressedDate={this.getPressedDate} pressedDate={this.state.key} getRelativeWeek={this.getRelativeWeek} relativeWeek={this.state.relativeWeek}/>
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
-					<View style={styles.testy}>
+					<View style={styles.textField}>
 						<Text style={styles.dateStyle}>
 							{this.state.textFieldDate}:
 						</Text>
-						<TextInput style={styles.textInputStyle} keyboardAppearance={'dark'} editable={true} placeholder={"Log your workout here..."} maxLength={300} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
+						<TextInput style={styles.textInputStyle} keyboardAppearance={'dark'} editable={true} placeholder={"Log your workout here..."} maxLength={400} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
 					</View>
 					<View style={styles.buttonStyle}>
 						<View style={styles.buttonSaveStyle}>
@@ -142,7 +142,7 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	testy: {
+	textField: {
 		flex: 1,
 	},
 	textInputStyle: {
