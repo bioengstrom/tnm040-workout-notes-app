@@ -24,13 +24,6 @@ export default class Calendar extends Component{
     super(props);
   }
 
-  //Checks wether if the user is one scroll away from the scroll limits.
-  scrollLimitReached = (scrollDirection) => {
-    if(scrollDirection=='low' && this.props.relativeWeek <= lowLimit+1) return true;
-    if(scrollDirection=='high' && this.props.relativeWeek >= highLimit-1) return true;
-    return false;
-  }
-
   //crement the week dependant on which way the user wants to scroll. If the limit is reached, call an alert.
   relativeWeekUpdate = (scrollDirection) => {
     if(scrollDirection=='prev' && this.props.relativeWeek > lowLimit) this.props.getRelativeWeek(--this.props.relativeWeek);
@@ -66,11 +59,11 @@ export default class Calendar extends Component{
       <View>
         <MonthAndYear currentWeek={this.props.relativeWeek}/>
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.relativeWeekUpdate('prev')} style={[styles.iconContainer, styles.iconContainerLeft, this.scrollLimitReached('low')?{opacity: 0.25}:{opacity: 1},]}>
+          <TouchableOpacity onPress={() => this.relativeWeekUpdate('prev')} style={[styles.iconContainer, styles.iconContainerLeft]}>
             <Image style={styles.icon} source={require("./images/chevronLeft.png")}/>
           </TouchableOpacity>
           {renderedButtons}
-          <TouchableOpacity onPress={() => this.relativeWeekUpdate('next')} style={[styles.iconContainer, styles.iconContainerRight, this.scrollLimitReached('high')?{opacity: 0.25}:{opacity: 1},]}>
+          <TouchableOpacity onPress={() => this.relativeWeekUpdate('next')} style={[styles.iconContainer, styles.iconContainerRight]}>
             <Image style={styles.icon} source={require("./images/chevronRight.png")}/>
           </TouchableOpacity>
         </View>

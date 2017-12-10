@@ -10,20 +10,14 @@ export default class App extends React.Component {
 		super(props);
 
 		//States that are used in this class, and passed as props to the child-classes.
-		this.state = {
-			text: null,
-			key: moment().format('L'),
-			textFieldDate: moment().format("MMM Do YYYY"),
-			relativeWeek: 0,
-			plannedWorkoutArray: new Array(7),
-		};
+		this.state = {text: null, key: moment().format('L'), textFieldDate: moment().format("MMM Do YYYY"), relativeWeek: 0, plannedWorkoutArray: Array(7).fill(0)};
 
 		//Binds the functions here in the constructor for slight preformance enhancements.
 		this.clearNote = this.clearNote.bind(this);
 		this.handleDate = this.handleDate.bind(this);
-		this.setPlannedWorkout = this.setPlannedWorkout.bind(this);
 		this.getPressedDate = this.getPressedDate.bind(this);
 		this.getRelativeWeek = this.getRelativeWeek.bind(this);
+		this.setPlannedWorkout = this.setPlannedWorkout.bind(this);
 
 		this.handleDate(moment().format('L'));
     this.setPlannedWorkout(0);
@@ -66,7 +60,6 @@ export default class App extends React.Component {
 	saveNote = (value) => {
 		AsyncStorage.setItem(this.state.key, value);
 		this.setState({text: value});
-
 		this.setPlannedWorkout(this.state.relativeWeek);
 	}
 
@@ -74,7 +67,6 @@ export default class App extends React.Component {
 	clearNote = () => {
 		AsyncStorage.removeItem(this.state.key);
 		this.setState({text: null});
-
 		this.setPlannedWorkout(this.state.relativeWeek);
 	}
 
@@ -89,7 +81,7 @@ export default class App extends React.Component {
 
 	//Creates an array of all the keys of the relative week.
 	createKeyArray = (inValue) => {
-    let keyArray = new Array(7);
+    let keyArray = Array(7);
     for(let i=0; i < 7; ++i){ //Loops through the current week's dates and matches is with the correct weekday button.
       let currentLoopDay=moment().startOf('isoweek').add(i+(7*inValue),'day');
       keyArray[i]=currentLoopDay.format('L');
@@ -125,11 +117,11 @@ export default class App extends React.Component {
 				</TouchableWithoutFeedback>
 				<Calendar plannedWorkoutArray={this.state.plannedWorkoutArray} getPressedDateTextField={this.getPressedDateTextField} getPressedDate={this.getPressedDate} pressedDate={this.state.key} getRelativeWeek={this.getRelativeWeek} relativeWeek={this.state.relativeWeek}/>
       	<KeyboardAvoidingView style={styles.noteStyle} behavior={'padding'}>
-					<View>
+					<View style={styles.testy}>
 						<Text style={styles.dateStyle}>
 							{this.state.textFieldDate}:
 						</Text>
-						<TextInput style={styles.textInputStyle} editable={true} placeholder={"Log your workout here..."} maxLength={300} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
+						<TextInput style={styles.textInputStyle} keyboardAppearance={'dark'} editable={true} placeholder={"Log your workout here..."} maxLength={300} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
 					</View>
 					<View style={styles.buttonStyle}>
 						<View style={styles.buttonSaveStyle}>
@@ -150,12 +142,15 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	testy: {
+		flex: 1,
+	},
 	textInputStyle: {
 		backgroundColor: 'white',
 		padding: 15,
 		fontSize: 20,
 		alignSelf: 'stretch',
-		height: '60%',
+		flex: 1,
 		fontFamily: 'Avenir',
 		backgroundColor: 'transparent',
 	},
@@ -183,6 +178,7 @@ const styles = StyleSheet.create({
 		width: 'auto',
 		flexDirection: 'row',
 		justifyContent: 'center',
+		marginTop: '2.5%',
 		marginBottom: '5%', //Distance: buttons to Keyboard
   },
   buttonClearStyle: {
@@ -194,7 +190,7 @@ const styles = StyleSheet.create({
 		//Shadow style
 		borderWidth: 1,
 	    borderRadius: 2,
-	    borderColor: '#e8e8e3', // To be changed to backgrounColor
+	    borderColor: '#e8e8e3',
 	    borderBottomWidth: 0,
 	    shadowColor: 'grey',
 	    shadowOffset: { width: 0, height: 1 },
@@ -211,7 +207,7 @@ const styles = StyleSheet.create({
 		//Shadow style
 		borderWidth: 1,
 		borderRadius: 2,
-		borderColor: 'rgba(164, 194, 219, 1.0)', // To be changed to backgrounColor
+		borderColor: 'rgba(164, 194, 219, 1.0)',
 		borderBottomWidth: 0,
 		shadowColor: 'grey',
 		shadowOffset: {width: 0, height: 1},

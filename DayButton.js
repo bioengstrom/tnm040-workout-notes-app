@@ -34,10 +34,8 @@ export default class DayButton extends Component{
   render(){
     return(
       <TouchableOpacity onPress={this.getPressedDate} style={[styles.weekDayButton, this.buttonPressed()]}>
-        <Text style={[styles.buttonText, this.highlightToday()?{color: '#dc5f5f'}:{color: 'black'}]}>
-          <Text>
-            {this.props.text}{"\n"}
-          </Text>
+        <Text style={[styles.buttonText, this.highlightToday()?[styles.today]:[styles.notToday]]}>
+          {this.props.text}{"\n"}
           <Text style={styles.dateAlign}>
             {this.getCurrentLoopDay().format('D')}
           </Text>
@@ -50,6 +48,12 @@ export default class DayButton extends Component{
 }
 
 const styles = StyleSheet.create({
+  notToday:{
+    color: 'black',
+  },
+  today: {
+    color: '#dc5f5f',
+  },
   planningIndicator: {
     justifyContent: 'center',
     alignSelf: 'center',
