@@ -4,8 +4,8 @@ import MonthAndYear from './MonthAndYear.js';
 import DayButton from './DayButton.js';
 
 //Values that sets the number of weeks the user can scroll from the week rendered on startup.
-const lowLimit = -520;
-const highLimit = 520;
+const lowLimit = -5200;
+const highLimit = 5200;
 
 //Array that are looped through when creating the weekday buttons.
 const weekDayButtons = [

@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   today: {
-    color: '#dc5f5f',
+    color: '#ff751a',
   },
   planningIndicator: {
     justifyContent: 'center',

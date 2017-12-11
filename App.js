@@ -121,7 +121,7 @@ export default class App extends React.Component {
 						<Text style={styles.dateStyle}>
 							{this.state.textFieldDate}:
 						</Text>
-						<TextInput style={styles.textInputStyle} keyboardAppearance={'dark'} editable={true} placeholder={"Log your workout here..."} maxLength={400} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
+						<TextInput style={styles.textInputStyle} editable={true} placeholder={"Log your workout here..."} maxLength={400} multiline={true} numberOfLines={100} onChangeText={this.saveNote} value={this.state.text} returnKeyType={'none'} placeholderColor={'rgba(0, 0, 0, 0.1)'}/>
 					</View>
 					<View style={styles.buttonStyle}>
 						<View style={styles.buttonSaveStyle}>
