@@ -1,0 +1,15 @@
+# Mac.
+.DS_STORE
+
+# Expo.
+.expo
+.expo/
+expo
+expo/packager-info.json
+expo/settings.json
+.expo/packager-info.json
+.expo/settings.json
+
+# Node.
+node_modules
+npm-debug.log
